@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<!-- saved from url=(0088)http://nikgrozev.com/2015/07/14/overview-of-modern-concurrency-and-parallelism-concepts/ -->
+<html class="js no-touch rgba hsla textshadow opacity svg js wf-sourcecodepro-n4-active wf-sourcecodepro-n7-active wf-sourcesanspro-i2-active wf-sourcesanspro-i3-active wf-sourcesanspro-i4-active wf-sourcesanspro-i6-active wf-sourcesanspro-i7-active wf-sourcesanspro-i9-active wf-sourcesanspro-n2-active wf-sourcesanspro-n3-active wf-sourcesanspro-n4-active wf-sourcesanspro-n6-active wf-sourcesanspro-n7-active wf-sourcesanspro-n9-active wf-volkhov-i4-active wf-volkhov-i7-active wf-volkhov-n4-active wf-volkhov-n7-active wf-active" lang="en"><!--<![endif]--><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>Overview of Modern Concurrency and Parallelism Concepts – Nikolay Grozev</title>
+<meta name="description" content="Most software engineers know about operating system (OS) level processes and threads. They are taught in all university OS courses. However, newer concepts promising higher throughput, less overhead, latency, and development efforts have emerged. The goals of this article are to summarise, exemplify and compare terms like green threads, fibres, goroutine, actors etc ...">
+<meta name="keywords" content="Actors, Coroutine, Fiber, Goroutine, Lmax-Disruptor, Thread, Process, Parallel Programming, Concurrent Programming, Parallelism, Concurrency">
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="Overview of Modern Concurrency and Parallelism Concepts">
+<meta name="twitter:description" content="Most software engineers know about operating system (OS) level processes and threads. They are taught in all university OS courses. However, newer concepts promising higher throughput, less overhead, latency, and development efforts have emerged. The goals of this article are to summarise, exemplify and compare terms like green threads, fibres, goroutine, actors etc ...">
+<meta name="twitter:site" content="@nikolaygrozev">
+
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://nikgrozev.com/images/site-logo.jpg">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_UK">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Overview of Modern Concurrency and Parallelism Concepts">
+<meta property="og:description" content="Most software engineers know about operating system (OS) level processes and threads. They are taught in all university OS courses. However, newer concepts promising higher throughput, less overhead, latency, and development efforts have emerged. The goals of this article are to summarise, exemplify and compare terms like green threads, fibres, goroutine, actors etc ...">
+<meta property="og:url" content="http://nikgrozev.com/2015/07/14/overview-of-modern-concurrency-and-parallelism-concepts/">
+<meta property="og:site_name" content="Nikolay Grozev">
+
+
+
+
+
+<link rel="canonical" href="http://nikgrozev.com/2015/07/14/overview-of-modern-concurrency-and-parallelism-concepts/">
+<link href="http://nikgrozev.com/feed.xml" type="application/atom+xml" rel="alternate" title="Nikolay Grozev Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="./Overview of Modern Concurrency and Parallelism Concepts – Nikolay Grozev_files/main.css">
+<!-- Webfonts -->
+<link rel="stylesheet" href="./Overview of Modern Concurrency and Parallelism Concepts – Nikolay Grozev_files/l" media="all"><div class="fit-vids-style" id="fit-vids-style" style="display: none;">­<style>.fluid-width-video-wrapper{width:100%;position:relative;padding:0;}.fluid-width-video-wrapper iframe,.fluid-width-video-wrapper object,.fluid-width-video-wrapper embed {position:absolute;top:0;left:0;width:100%;height:100%;}</style></div><script src="./Overview of Modern Concurrency and Parallelism Concepts – Nikolay Grozev_files/source-sans-pro-n2,i2,n3,i3,n4,i4,n6,i6,n7,i7,n9,i9"></script>
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+  <script src="http://nikgrozev.com/assets/js/vendor/html5shiv.min.js"></script>
+  <script src="http://nikgrozev.com/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="./Overview of Modern Concurrency and Parallelism Concepts – Nikolay Grozev_files/modernizr-2.7.1.custom.min.js.téléchargement"></script>
+
+
+<!-- MathJax -->
+<script src="./Overview of Modern Concurrency and Parallelism Concepts – Nikolay Grozev_files/MathJax.js.téléchargement"></script>
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://nikgrozev.com/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://nikgrozev.com/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://nikgrozev.com/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://nikgrozev.com/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://nikgrozev.com/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://nikgrozev.com/images/apple-touch-icon-144x144-precomposed.png">
+
+<script type="text/javascript" async="" src="./Overview of Modern Concurrency and Parallelism Concepts – Nikolay Grozev_files/embed.js.téléchargement"></script><script async="" type="text/javascript" src="./Overview of Modern Concurrency and Parallelism Concepts – Nikolay Grozev_files/count.js.téléchargement"></script><style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Menu_Button .MathJax_Hover_Arrow {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px; font-family: 'Courier New',Courier; font-size: 9px; color: #F0F0F0}
+.MathJax_Menu_Button .MathJax_Hover_Arrow span {display: block; background-color: #AAA; border: 1px solid; border-radius: 3px; line-height: 0; padding: 4px}
+.MathJax_Hover_Arrow:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_Hover_Arrow:hover span {background-color: #CCC!important}
+</style><style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_About.MathJax_MousePost {outline: none}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 2px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 2px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; padding-top: .25em; color: #666666; font-size: .75em}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: 1em}
+.MathJax_MenuRadioCheck.RTL {right: 1em; left: auto}
+.MathJax_MenuLabel {padding: 2px 2em 4px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #CCCCCC; margin: 4px 1px 0px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: Highlight; color: HighlightText}
+.MathJax_MenuDisabled:focus, .MathJax_MenuLabel:focus {background-color: #E8E8E8}
+.MathJax_ContextMenu:focus {outline: none}
+.MathJax_ContextMenu .MathJax_MenuItem:focus {outline: none}
+#MathJax_AboutClose {top: .2em; right: .2em}
+.MathJax_Menu .MathJax_MenuClose {top: -10px; left: -10px}
+.MathJax_MenuClose {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; font-family: 'Courier New',Courier; font-size: 24px; color: #F0F0F0}
+.MathJax_MenuClose span {display: block; background-color: #AAA; border: 1.5px solid; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; line-height: 0; padding: 8px 0 6px}
+.MathJax_MenuClose:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_MenuClose:hover span {background-color: #CCC!important}
+.MathJax_MenuClose:hover:focus {outline: none}
+</style><style type="text/css">.MathJax_Preview .MJXf-math {color: inherit!important}
+</style><style type="text/css">.MJX_Assistive_MathML {position: absolute!important; top: 0; left: 0; clip: rect(1px, 1px, 1px, 1px); padding: 1px 0 0 0!important; border: 0!important; height: 1px!important; width: 1px!important; overflow: hidden!important; display: block!important; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none}
+.MJX_Assistive_MathML.MJX_Assistive_MathML_Block {width: 100%!important}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1em; bottom: 1.5em; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style><style type="text/css">.MJXp-script {font-size: .8em}
+.MJXp-right {-webkit-transform-origin: right; -moz-transform-origin: right; -ms-transform-origin: right; -o-transform-origin: right; transform-origin: right}
+.MJXp-bold {font-weight: bold}
+.MJXp-italic {font-style: italic}
+.MJXp-scr {font-family: MathJax_Script,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-frak {font-family: MathJax_Fraktur,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-sf {font-family: MathJax_SansSerif,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-cal {font-family: MathJax_Caligraphic,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-mono {font-family: MathJax_Typewriter,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-largeop {font-size: 150%}
+.MJXp-largeop.MJXp-int {vertical-align: -.2em}
+.MJXp-math {display: inline-block; line-height: 1.2; text-indent: 0; font-family: 'Times New Roman',Times,STIXGeneral,serif; white-space: nowrap; border-collapse: collapse}
+.MJXp-display {display: block; text-align: center; margin: 1em 0}
+.MJXp-math span {display: inline-block}
+.MJXp-box {display: block!important; text-align: center}
+.MJXp-box:after {content: " "}
+.MJXp-rule {display: block!important; margin-top: .1em}
+.MJXp-char {display: block!important}
+.MJXp-mo {margin: 0 .15em}
+.MJXp-mfrac {margin: 0 .125em; vertical-align: .25em}
+.MJXp-denom {display: inline-table!important; width: 100%}
+.MJXp-denom > * {display: table-row!important}
+.MJXp-surd {vertical-align: top}
+.MJXp-surd > * {display: block!important}
+.MJXp-script-box > *  {display: table!important; height: 50%}
+.MJXp-script-box > * > * {display: table-cell!important; vertical-align: top}
+.MJXp-script-box > *:last-child > * {vertical-align: bottom}
+.MJXp-script-box > * > * > * {display: block!important}
+.MJXp-mphantom {visibility: hidden}
+.MJXp-munderover {display: inline-table!important}
+.MJXp-over {display: inline-block!important; text-align: center}
+.MJXp-over > * {display: block!important}
+.MJXp-munderover > * {display: table-row!important}
+.MJXp-mtable {vertical-align: .25em; margin: 0 .125em}
+.MJXp-mtable > * {display: inline-table!important; vertical-align: middle}
+.MJXp-mtr {display: table-row!important}
+.MJXp-mtd {display: table-cell!important; text-align: center; padding: .5em 0 0 .5em}
+.MJXp-mtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-mlabeledtr {display: table-row!important}
+.MJXp-mlabeledtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mlabeledtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MJXp-scale0 {-webkit-transform: scaleX(.0); -moz-transform: scaleX(.0); -ms-transform: scaleX(.0); -o-transform: scaleX(.0); transform: scaleX(.0)}
+.MJXp-scale1 {-webkit-transform: scaleX(.1); -moz-transform: scaleX(.1); -ms-transform: scaleX(.1); -o-transform: scaleX(.1); transform: scaleX(.1)}
+.MJXp-scale2 {-webkit-transform: scaleX(.2); -moz-transform: scaleX(.2); -ms-transform: scaleX(.2); -o-transform: scaleX(.2); transform: scaleX(.2)}
+.MJXp-scale3 {-webkit-transform: scaleX(.3); -moz-transform: scaleX(.3); -ms-transform: scaleX(.3); -o-transform: scaleX(.3); transform: scaleX(.3)}
+.MJXp-scale4 {-webkit-transform: scaleX(.4); -moz-transform: scaleX(.4); -ms-transform: scaleX(.4); -o-transform: scaleX(.4); transform: scaleX(.4)}
+.MJXp-scale5 {-webkit-transform: scaleX(.5); -moz-transform: scaleX(.5); -ms-transform: scaleX(.5); -o-transform: scaleX(.5); transform: scaleX(.5)}
+.MJXp-scale6 {-webkit-transform: scaleX(.6); -moz-transform: scaleX(.6); -ms-transform: scaleX(.6); -o-transform: scaleX(.6); transform: scaleX(.6)}
+.MJXp-scale7 {-webkit-transform: scaleX(.7); -moz-transform: scaleX(.7); -ms-transform: scaleX(.7); -o-transform: scaleX(.7); transform: scaleX(.7)}
+.MJXp-scale8 {-webkit-transform: scaleX(.8); -moz-transform: scaleX(.8); -ms-transform: scaleX(.8); -o-transform: scaleX(.8); transform: scaleX(.8)}
+.MJXp-scale9 {-webkit-transform: scaleX(.9); -moz-transform: scaleX(.9); -ms-transform: scaleX(.9); -o-transform: scaleX(.9); transform: scaleX(.9)}
+.MathJax_PHTML .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style><style>@media print {#ghostery-purple-box {display:none !important}}</style></head>
+
+<body id="post"><div id="MathJax_Message" style="display: none;"></div>
+
+<div class="navigation-wrapper">
+	<a href="http://nikgrozev.com/2015/07/14/overview-of-modern-concurrency-and-parallelism-concepts/#" id="nav-toggle" aria-hidden="true"><i class="fa fa-bars"></i> Menu</a><nav role="navigation" id="site-nav" class="animated drop closed" style="transition: max-height 200ms; position: relative;" aria-hidden="false">
+	    <ul>
+      
+		    
+		    <li><a href="http://nikgrozev.com/about/">About</a></li>
+		  
+		    
+		    <li><a href="http://nikgrozev.com/blog/">Blog</a></li>
+		  
+		    
+		    <li><a href="http://nikgrozev.com/publications/">Publications</a></li>
+		  
+		    
+		    <li><a href="http://nikgrozev.com/search/">Search</a></li>
+		  
+	    </ul>
+	</nav>
+</div><!-- /.navigation-wrapper -->
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+<header class="masthead">
+	<div class="wrap">
+      
+  		<a href="http://nikgrozev.com/" class="site-logo" rel="home" title="Nikolay Grozev"><img src="./Overview of Modern Concurrency and Parallelism Concepts – Nikolay Grozev_files/site-logo.jpg" width="200" height="200" alt="Nikolay Grozev logo" class="animated fadeInDown"></a>
+      
+      <div class="site-description-and-title">
+	  	<h1 class="site-title animated fadeIn"><a href="http://nikgrozev.com/">Nikolay Grozev</a></h1>
+	  	<h2 class="site-description animated fadeIn" itemprop="description">Staying on top of it.</h2>
+	  </div>
+	</div>
+</header><!-- /.masthead -->
+
+<div class="js-menu-screen menu-screen"></div>
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    
+    <div class="entry-wrapper">
+      <header class="entry-header">
+        <ul class="entry-tags">
+          <li><a href="http://nikgrozev.com/tags/#Actors" title="Pages tagged Actors">Actors</a></li><li><a href="http://nikgrozev.com/tags/#Coroutine" title="Pages tagged Coroutine">Coroutine</a></li><li><a href="http://nikgrozev.com/tags/#Fiber" title="Pages tagged Fiber">Fiber</a></li><li><a href="http://nikgrozev.com/tags/#Goroutine" title="Pages tagged Goroutine">Goroutine</a></li><li><a href="http://nikgrozev.com/tags/#Lmax-Disruptor" title="Pages tagged Lmax-Disruptor">Lmax-Disruptor</a></li><li><a href="http://nikgrozev.com/tags/#Thread" title="Pages tagged Thread">Thread</a></li><li><a href="http://nikgrozev.com/tags/#Process" title="Pages tagged Process">Process</a></li><li><a href="http://nikgrozev.com/tags/#Parallel Programming" title="Pages tagged Parallel Programming">Parallel Programming</a></li><li><a href="http://nikgrozev.com/tags/#Concurrent Programming" title="Pages tagged Concurrent Programming">Concurrent Programming</a></li><li><a href="http://nikgrozev.com/tags/#Parallelism" title="Pages tagged Parallelism">Parallelism</a></li><li><a href="http://nikgrozev.com/tags/#Concurrency" title="Pages tagged Concurrency">Concurrency</a></li>
+        </ul>
+        
+          <h1 class="entry-title">Overview of Modern Concurrency and Parallelism Concepts</h1>
+        
+        
+      </header>
+      <footer class="entry-meta">
+        
+        
+          <img src="./Overview of Modern Concurrency and Parallelism Concepts – Nikolay Grozev_files/bio-photo.jpg" class="bio-photo" alt="Nikolay Grozev bio photo">
+        
+        <span class="author vcard">By: <span class="fn">Nikolay Grozev</span></span>
+        <span class="entry-date date published"><time datetime="2015-07-14T18:00:39+00:00"><i class="fa fa-calendar-o"></i> July 14, 2015</time></span>
+        
+        <span class="entry-comments"><i class="fa fa-comment-o"></i> <a href="http://nikgrozev.com/2015/07/14/overview-of-modern-concurrency-and-parallelism-concepts/#disqus_thread">Comment</a></span>
+        <span class="social-share-twitter">
+  <a href="https://twitter.com/intent/tweet?hashtags=Actors,Coroutine,Fiber,Goroutine,Lmax-Disruptor,Thread,Process,ParallelProgramming,ConcurrentProgramming,Parallelism,Concurrency&amp;text=Overview%20of%20Modern%20Concurrency%20and%20Parallelism%20Concepts&amp;url=http://nikgrozev.com/2015/07/14/overview-of-modern-concurrency-and-parallelism-concepts/&amp;via=nikolaygrozev" title="Share on Twitter" itemprop="Twitter"><i class="fa fa-twitter-square"></i> Tweet</a>
+</span>
+<span class="social-share-facebook">
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http://nikgrozev.com/2015/07/14/overview-of-modern-concurrency-and-parallelism-concepts/" title="Share on Facebook" itemprop="Facebook"><i class="fa fa-facebook-square"></i> Like</a>
+</span>
+<span class="social-share-googleplus">
+  <a href="https://plus.google.com/share?url=http://nikgrozev.com/2015/07/14/overview-of-modern-concurrency-and-parallelism-concepts/" title="Share on Google Plus" itemprop="GooglePlus"><i class="fa fa-google-plus-square"></i> +1</a>
+</span>
+<!-- /.social-share -->
+        
+      </footer>
+      <div class="entry-content">
+        <h1 id="introduction">Introduction</h1>
+
+<p>Most software engineers know about operating system (OS) level processes and threads. 
+They are taught in all university OS courses. However, newer concepts promising higher throughput, 
+less overhead, latency, and development efforts have emerged.</p>
+
+<p>I was perplexed as I couldn’t find a succinct and systematic description and comparison. 
+This is precisely the goal of this article – to summarise, exemplify and compare terms 
+like green threads, fibres, goroutine, actors etc.</p>
+
+<p>This article aims to give a general overview of these concepts and is not exhaustive. 
+There is still some terminological ambiguity with respect to some terms. 
+For this article, I have mostly followed the respective Wikipedia pages.</p>
+
+<h1 id="concurrency-vs-parallelism">Concurrency vs. Parallelism</h1>
+
+<p>Let’s start by clarifying two important concepts – concurrency and parallelism. 
+Until recently I considered them synonymous and there is still some ambiguity in the community about what they mean.</p>
+
+<p>According to <a href="https://vimeo.com/49718712">Rob Pike’s talk</a>, concurrency is about composing independent 
+processes (in the general meaning of the term process) to work together, while parallelism is about 
+actually executing multiple processes simultaneously. Concurrency is about the design and structure of the 
+application, while parallelism is about the actual execution.</p>
+
+<p>Naturally, the terms are related. In order to achieve efficient utilisation of a multi-core 
+system (i.e. good parallelism) you need scalable and flexible design with no bottlenecks 
+(i.e. good concurrency).</p>
+
+<figure>
+  <img src="./Overview of Modern Concurrency and Parallelism Concepts – Nikolay Grozev_files/concurrent_vs_parallel.png" alt="Concurrent vs. Parallel">
+  <figcaption>Concurrent vs. Parallel.</figcaption>
+</figure>
+
+<p>Let’s take a multi-threaded application as an example. The separation of the application into 
+threads defines its concurrent model. The mapping of these threads on the available cores defines its 
+level or parallelism. A concurrent system may run efficiently on a single processor, in which case it is not parallel.</p>
+
+<p>We can have it vice versa as well. It is possible to have parallelism without concurrency. 
+For example in <a href="https://en.wikipedia.org/wiki/SIMD">SIMD architectures</a> there are 
+simultaneous/parallel computations, although only one instruction is run at a time.</p>
+
+<h1 id="processes-and-threads">Processes and Threads</h1>
+
+<p>If you know about OS processes and threads you may wish to skip this section.</p>
+
+<p>A <a href="https://en.wikipedia.org/wiki/Process_(computing)">process</a> is an instance of a 
+program being executed. Each process has its own <a href="https://en.wikipedia.org/wiki/Address_space">address space</a>, 
+which can not be accessed from other processes. 
+Hence, <a href="https://en.wikipedia.org/wiki/Process_isolation">processes are isolated</a> from each other 
+and can not directly access each others’ memory, which increases security and fault tolerance. 
+Special <a href="https://en.wikipedia.org/wiki/Inter-process_communication">inter-process communication</a> 
+techniques like sockets and pipelines can be used to communicate between processes. 
+The OS preemtively schedules the processes’ access to CPU resources.</p>
+
+<p>OS processes can be expensive to create, as each one has its own address space, program code, open file handles etc. 
+Furthermore, the inter-process communication can be inefficient and cumbersome to program.</p>
+
+<p>Enter <a href="https://en.wikipedia.org/wiki/Thread_(computing)">threads</a> (a.k.a. lightweight processes). 
+A thread is a separate line of execution (i.e. a sequence of instructions) within a process. 
+A process can have multiple threads, all of which share its address space, file handles etc. 
+Starting a thread is cheaper, as fewer resources need to be allocated. 
+The threads within a process are concurrent and can execute in parallel. 
+Each thread maintains its own programming stack. Alike processes, the OS scheduler preemptively 
+schedules all threads.</p>
+
+<figure>
+  <img src="./Overview of Modern Concurrency and Parallelism Concepts – Nikolay Grozev_files/threads.png" alt="Each thread in a process has its own stack">
+  <figcaption>Each thread in a process has its own stack.</figcaption>
+</figure>
+
+<p>Since all threads within a process share the same address space, they can communicate 
+much more easily. However, this makes multi-threaded programming notoriously difficult, 
+as the access to shared variables must be carefully synchronised. Acquiring and releasing locks 
+can significantly slow down an application as threads can be blocked for long time periods. 
+Furthermore, blocking leads to context switching, which is expensive.</p>
+
+<p>Another problem is that each thread has its own stack (typically ~2MB). This limits the number 
+of threads you can have in a system to at most tens of thousands of threads for machines with 
+large RAM. In a web server running a separate thread per client, this will limit the number of 
+clients you can serve, although most of the threads may be idle (e.g. waiting on I/O). 
+<a href="http://programmers.stackexchange.com/questions/173575/what-is-a-thread-pool">Thread pools</a> and queues 
+can be used to resolve the issue and to avoid excessive thread allocation. This may result in further 
+contention, as the access to the pool itself must be synchronised and the number of incoming requests 
+may be greater than the pool size, which is still limited by the maximum number of threads in the system.</p>
+
+<h1 id="green-threads">Green Threads</h1>
+
+<p>When Java was introduced 20 years ago it featured threads as a core concept and aimed to run on all platforms. 
+At that point some platforms (e.g. old Solaris systems) did not have native support for threads and the JVM 
+could not map its threads to OS threads. Hence, they had to emulate threads on top of such platforms. 
+Such threads are called <a href="https://en.wikipedia.org/wiki/Green_threads">Green Threads</a>.</p>
+
+<p>Green threads run in <a href="https://en.wikipedia.org/wiki/User_space">user space</a>, and are scheduled by a 
+library or a virtual machine (VM). Thus, the OS kernel “sees” green threads as belonging to the same 
+process and <a href="http://stackoverflow.com/questions/16965725/why-green-threads-do-not-work-on-multiple-cores">can not schedule them on multiple cores</a> simuateneosly! 
+Therefore, green threads are a concurrency concept, but not a parallel one.</p>
+
+<p>Java has effectively abandoned green threads in favour of mapping to native OS threads.</p>
+
+<h1 id="protothreads">Protothreads</h1>
+
+<p><a href="https://en.wikipedia.org/wiki/Protothreads">Protothreads</a> are defined as stackless threads. 
+All protothreads share the same stack and context switching is done by 
+“<a href="http://dunkels.com/adam/pt/about.html">stack rewinding</a>”. They are not preemptable, 
+and only switch context when a blocking operation is invoked. As there is no stack, all local 
+variables are not preserved upon a context switch! Protothreads are available only as a C library, 
+and are used for low-memory embedded devices. Documentation is not too much, except for some 
+<a href="http://dunkels.com/adam/dunkels05using.pdf">academic papers</a> and a 
+<a href="https://engineering.purdue.edu/dcsl/reading/2009/rpanta-protothread.pdf">presentation</a>. 
+As they run on a single stack, I assume protothreads are concurrent but not truly parallel. 
+Protothreads seem to be a programming abstraction for event driven programming, rather than a true parallelism enabler.</p>
+
+<h1 id="fibers">Fibers</h1>
+
+<p>Remember that threads are lightweight processes. Well, <a href="https://en.wikipedia.org/wiki/Fiber_(computer_science)">Fibers</a> 
+are lightweight threads :). Fibers implement user space co-operative multitasking, rather than kernel 
+level pre-emptive one. Thus, a fiber can not be forcefully pre-empted by the OS kernel. A fiber must 
+voluntarily yield its execution to allow another one to run. Fibers always start and stop/yield in a 
+number of predefined places. This makes programming easier, as the programmers are guaranteed that their 
+code will not be abruptly interrupted and its data structures accessed by another fiber. However, fibers must 
+play nice and yield now and then to allow concurrency – this can not be delegated to the OS kernel.</p>
+
+<p>Fibers do have their own stacks, but the fiber switching is done in user space by the execution environment, 
+not the OS kernel generic scheduler. Yielding and resuming are respectively performed by saving and restoring 
+the fiber’s execution context/stack also more generally known as 
+<a href="https://en.wikipedia.org/wiki/Continuation">continuation</a>. Fibers have small stacks stored and managed in user space. 
+These factors should significantly <a href="http://locklessinc.com/articles/new_threading/">improve their performance</a> compared to threads.</p>
+
+<p>Fibers are a concurrency concept, but are not truly parallel. Typically, each fiber has a parent thread, 
+just as each thread belongs to a process. Multiple fibers from the same thread can not run simultaneously. 
+In other words, multiple execution paths can coexists in the form of fibers (i.e. concurrency) but they can 
+not actually run at the same time (parallelism).</p>
+
+<figure>
+  <img src="./Overview of Modern Concurrency and Parallelism Concepts – Nikolay Grozev_files/fiber.png" alt="Multiple Fibers in a thread.">
+  <figcaption>Multiple Fibers in a thread.</figcaption>
+</figure>
+
+<p>Fibers are usually short-lived tasks, unlike threads which are usually long lived. 
+Hence, fibers can have smaller stacks. For instance, the <a href="http://docs.paralleluniverse.co/quasar/">Quasar</a> 
+library allows you to specify the stack size of new fibres. Hence, you can have much more 
+fibers (i.e. millions) than threads (thousands).</p>
+
+<p>There are a lot of articles online about the <a href="http://docs.paralleluniverse.co/quasar/">Quasar</a> library, 
+which supports fibers in Java. In my opinion Quasar fibers are not true fibers as per the above definition, 
+and look more like goroutines, as they can achieve true parallelism and communicate via channels. 
+They are more flexible, but not the same :).</p>
+
+<p>So let’s give an example of fibers in Ruby. The following example defines a Fiber, which generates 
+the Fibonacci numbers and is a modified version of the <a href="http://www.infoq.com/news/2007/08/ruby-1-9-fibers">InfoQ</a> example. 
+After each number is generated, the fiber yields. Once it is resumed, the fiber reinstates its stack, 
+generates another number and yields again.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9</pre></td><td class="code"><pre><span class="nb">require</span> <span class="s1">'fiber'</span>
+<span class="n">fib</span> <span class="o">=</span> <span class="no">Fiber</span><span class="p">.</span><span class="nf">new</span> <span class="k">do</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span>
+    <span class="kp">loop</span> <span class="k">do</span>
+        <span class="nb">puts</span> <span class="n">y</span>
+        <span class="no">Fiber</span><span class="p">.</span><span class="nf">yield</span>
+        <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">,</span><span class="n">x</span><span class="o">+</span><span class="n">y</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+</pre></td></tr></tbody></table>
+</div>
+</div>
+
+<p>It is responsibility of the caller to start and resume the fibers. 
+The following lines print the first 20 Fibonacci numbers.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1</pre></td><td class="code"><pre><span class="mi">20</span><span class="p">.</span><span class="nf">times</span> <span class="p">{</span> <span class="n">fib</span><span class="p">.</span><span class="nf">resume</span> <span class="p">}</span>
+</pre></td></tr></tbody></table>
+</div>
+</div>
+
+<p>Computing Fibonacci is not the most impressive or useful example. 
+Indeed, there is a much better use case. Let’s assume we have a wrapper of a native async 
+library for downloading HTTP resources. The methods of this library can be provided with callbacks, 
+which are executed once the async operation completes. In this scenario, the fiber can start an 
+asynchronous HTTP operation and the yield. As a callback, we can provide an expression which resumes the fiber.</p>
+
+<p>So we can have a fiber yield, while an external native library is doing extensive I/O, 
+and then resume once this is done. Upon resuming the fiber can for example update the user interface (UI). 
+This happens on the same thread! The alternative would be to start a separate thread for the I/O task, 
+which blocks until it is complete and then concurrently modifies the UI.</p>
+
+<p>For an example of how to use Fibers in Ruby in such situation, you can check out 
+<a href="https://www.igvita.com/2010/03/22/untangling-evented-code-with-ruby-fibers/">this article</a>.</p>
+
+<p>In fact this approach of wrapping a long running backround task in a fiber is so widesperead, 
+that C# introduces a specialised <a href="https://en.wikipedia.org/wiki/Await">Async/Await</a> language structure for it.</p>
+
+<p>As I mentioned, there is still some ambiguity in regard to many concurrency terms. 
+For example, in <a href="http://docs.paralleluniverse.co/quasar/">Quasar</a> fibers can run in parallel. 
+<a href="https://www.haskell.org/ghc/">GHC</a> and <a href="https://en.wikipedia.org/wiki/Mercury_%28programming_language%29">Mercury</a> 
+can migrate fibers from one thread to another, and GHC can even preempt them. 
+In this section, I’ve use the <a href="https://en.wikipedia.org/wiki/Fiber_%28computer_science%29">Wikipedia definition of Fiber</a>, 
+but other definitions exists as well.</p>
+
+<h1 id="generators">Generators</h1>
+
+<p>As a step towards coroutines, we will discuss <a href="https://en.wikipedia.org/wiki/Generator_(computer_programming)">generators</a>, 
+also known as semicoroutines. You’re probably familiar with this concept if you’ve studied python or a 
+functional language like Lisp.</p>
+
+<p>Most programming languages have the concept of <a href="https://en.wikipedia.org/wiki/Subroutine">subroutines</a> 
+in the form of procedures, functions, or methods. When called, a typical subroutine completes at once and 
+returns a single value. It does not hold any state between invocations.</p>
+
+<p>From the client code, a generator looks like a normal subroutine – it can be invoked and will 
+return a value. However, a generator yields (rather than return!) a value and preserves its state – i.e. 
+the values of the local variables. Again, this is known as continuation. When this generator is called again, 
+its state is restored and the execution continues from the point of the last yielding until a new yield is encountered. 
+Subroutines can be thought of as generators which never yield.</p>
+
+<p>The following example demonstrates a python 2 generator, which consequently produces numbers greater than n.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4</pre></td><td class="code"><pre><span class="k">def</span> <span class="nf">countfrom</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">n</span>
+        <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
+</pre></td></tr></tbody></table>
+</div>
+</div>
+
+<p>The following invocations demonstrate how generators work. Note that in python 2, the next method is used to call a generator.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6</pre></td><td class="code"><pre><span class="c"># Create a generator</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">countfrom</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="c"># Prints 5</span>
+<span class="k">print</span> <span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="nb">next</span><span class="p">())</span>
+<span class="c"># Prints 6</span>
+<span class="k">print</span> <span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="nb">next</span><span class="p">())</span>
+</pre></td></tr></tbody></table>
+</div>
+</div>
+
+<p>The first invocation of the generator reaches the yield statement, saves the local 
+variable state (n=5) and yields its value. The second invocation restores the local variable (n=5), 
+continues the execution after the yield statement and hence increases n to 6. When yield is reached again, the local variable state (n=6) is saved again and yielded to the caller.</p>
+
+<p>Perhaps you can see a lot similarity between generators and fibers. Indeed, they are almost 
+equivalent concepts. When a generator reaches a yield statement it saves its state and allows 
+other code to execute. The same thing happens with a fiber, which saves its stack and lets another 
+fiber run. When a generator is called, it restores its state and executes until a yield statement 
+is encountered again. The same happens with a fiber, which once it is resumed runs uninterupted 
+until it voluntarily yields.</p>
+
+<h1 id="coroutines">Coroutines</h1>
+
+<p>Using a fiber library can be cumbersome, and thus some programming languages introduce 
+<a href="https://en.wikipedia.org/wiki/Coroutine">coroutines</a>. The two concepts are functionally equivalent. 
+However, coroutines are implemented with specific syntax on the programming language level.</p>
+
+<p>Coroutines are a generalisation of generators. When you are invoking a generator, you can not 
+specify a parameter - i.e. in the previoous example we could not write g.next(7). 
+Coroutines allow for this. When the coroutine is resumed, the specified value is provided to it in 
+the form of a result of yield. The following example illustrates this:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4</pre></td><td class="code"><pre><span class="k">def</span> <span class="nf">countfrom</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">n</span>
+        <span class="n">n</span> <span class="o">+=</span> <span class="n">i</span>
+</pre></td></tr></tbody></table>
+</div>
+</div>
+
+<p>This code can be invoked as:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8</pre></td><td class="code"><pre><span class="c"># Create the coroutine</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">countfrom</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="c"># First call to the coroutine – Prints 5</span>
+<span class="k">print</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="nb">next</span><span class="p">())</span>
+<span class="c"># Prints 7</span>
+<span class="k">print</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+<span class="c"># Prints 10</span>
+<span class="k">print</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+</pre></td></tr></tbody></table>
+</div>
+</div>
+
+<p>In Python 2 there are some syntactic specifics. When you call a coroutine for the first time, 
+you have to use <code class="highlighter-rouge">next</code>, just like with generators. Subsequent calls must use the <code class="highlighter-rouge">send</code> 
+method, providing the actual value. This is needed, because in the beginning the coroutine is not 
+halted/paused on a yield statement. The invocation of <code class="highlighter-rouge">next</code> intialises it to such a state. 
+Subsequent invocations of send actually illustrate the invocation of the coroutine.</p>
+
+<p>Philosophically speaking, subroutines and coroutines are two different ways to structure a program. 
+With subroutines, you’re dividing the program into subparts which execute to completion one after another. 
+With coroutines, you divide your programs into collegial parts, whose lifecycles overlap, and which exchange 
+messages by yielding to each other. If that was a bit too abstract, you may want to consult 
+<a href="http://wla.berkeley.edu/~cs61a/fa11/lectures/streams.html#coroutines">Berkley’s lectures</a> for more details.</p>
+
+<p>More details on Python generators and coroutines can be found in 
+<a href="http://www.dabeaz.com/coroutines/Coroutines.pdf">David Beazley’s presentation</a>.</p>
+
+<p>Remember that coroutines are not truly parallel. The same is true for generators and fibers. 
+You can still avoid CPU blocking if you start some native asynchronous I/O and then yield, 
+but you can not use multiple CPU cores simultaneously.</p>
+
+<h1 id="goroutines">Goroutines</h1>
+
+<p>The <a href="https://en.wikipedia.org/wiki/Go_(programming_language)">Go programming language</a> 
+introduces the concept of <a href="http://blog.nindalf.com/how-goroutines-work/">Goroutines</a>. 
+They have been described as coroutines which can run in parallel. In terms of implementation, 
+the Go runtime environment maintains an internal pool of native OS threads. 
+Each goroutine is assigned to a thread from this pool which executes its logic. 
+Once a goroutine blocks (e.g. for I/O) the runtime environment can use its thread for another goroutine. 
+When a routine resumes, there is no guaranteer that it will be scheduled on the same thread.</p>
+
+<p>Each goroutine’s logic is in fact defined in a function. The Go runtime acts as a mediator 
+which schedules these functions on the underlying thread pool. In some special cases, 
+a long running goroutine can be preemted and its thread given to another routine. 
+Otherwise, the assignment of goroutines to threads is not preemptable. 
+The overall goal is to minimise the time threads are blocked, and thus serve the application 
+with fewer threads and context switches.</p>
+
+<figure>
+  <img src="./Overview of Modern Concurrency and Parallelism Concepts – Nikolay Grozev_files/goroutine.png" alt="Goroutines.">
+  <figcaption>Goroutines.</figcaption>
+</figure>
+
+<p>Goroutines communicate with each other via channels, similarly to processes communication. 
+This alleviates the synchronisation issues of shared memory communication that threads have. 
+This also bears some resemblance with how coroutines communicate by yielding values to each other.</p>
+
+<h1 id="actors">Actors</h1>
+
+<p>Alike the Object Oriented Model, the <a href="https://en.wikipedia.org/wiki/Actor_model">Actor Model</a> is 
+a way to model computation. Originally developed in the 70s, the actor model is in fact rather simple. 
+It introduces a single concept (the actor) which has a few basic properties.</p>
+
+<p>So what is an Actor? According to the <a href="https://www.youtube.com/watch?v=7erJ1DV_Tlo">overview by Hewit et al.</a> 
+an actor has the following properties:</p>
+
+<ol>
+  <li>Processing – an actor can do computation;</li>
+  <li>Storage – an actor can maintain state, similar to a Java object;</li>
+  <li>Communication – an actor can receive and send messages from and to other actors.</li>
+</ol>
+
+<p>In the actor model, a system is represented as a set of actors which exchange messages. 
+When an actor receives a message, it can do one or few of the following:</p>
+
+<ol>
+  <li>Send messages to other actors;</li>
+  <li>Create new actors;</li>
+  <li>Change its state – this new state will be used for processing the future message.</li>
+</ol>
+
+<p>A single actor is inherently non-concurrent (i.e. single threaded) and you need not worry 
+about synchronising the access to its state. However, implementations of this model can run 
+an actor’s logic in parallel if it is stateless/immutable – i.e. it does not use the last option 
+of the above list. If an actor is stateful the implementation may choose to do some queuing. 
+Either way, at a conceptual level you can think of actors as running one message at a time.</p>
+
+<p>When an actor sends a message, it does not wait for confirmation or response (think UDP not TCP). 
+Also, there are no guarantees about the order of message arrivals or delays. 
+Hence, actors communicate in a completely asynchronous and distributed fashion. 
+Moreover, actors are the atomic components in this model, share no state and are themselves 
+non-concurrent thus removing the need for locks and synchronisation. 
+Once you’ve built an actor model, it is inherently concurrent. 
+You can deploy on multiple cores and even networked machines to achieve true parallelism.</p>
+
+<p>As a practical example of an Actor-based framework we can consider 
+<a href="https://en.wikipedia.org/wiki/Akka_(toolkit)">Akka</a> - one of the most prominent implementations 
+targeted at the JVM. In Akka actors are arranged in a hierarchy. 
+Each actor is identified with its path from the root. 
+Every parent actor is designated as a supervisor of its child actors. 
+An actor can implement its own supervisor strategy, which gets executed when supervised actors fails. 
+Typically, this is used for restarting or recreating failed actors.</p>
+
+<p>Under the hood, Akka uses a thread pool. Based on the 
+<a href="http://stackoverflow.com/questions/20673206/how-are-akka-actors-implemented-on-underlying-threads">configuration and the message dispatchers</a> 
+(classes forwarding messages to actors), 
+Akka schedules the actors on the available threads. Actors can also be replicated and put behind a 
+<a href="https://www.packtpub.com/books/content/dispatchers-and-routers">Dispatcher</a> which load balances the incoming 
+messages among them. This can increase availability and responsiveness. Finally, actors can be transparently 
+distributed on <a href="http://www.typesafe.com/activator/template/akka-distributed-workers">multiple machines or a cluster</a>.</p>
+
+<figure>
+  <img src="./Overview of Modern Concurrency and Parallelism Concepts – Nikolay Grozev_files/actors.png" alt="Actors.">
+  <figcaption>Actors.</figcaption>
+</figure>
+
+<h1 id="lmax-disruptor">LMAX Disruptor</h1>
+
+<p>The <a href="http://lmax-exchange.github.io/disruptor/">LMAX Disruptor</a> method is a way to implement 
+producer-consumer systems more efficiently. It has been implemented as a Java library, 
+but the approach can be applied in non-JVM environments. While actors, goroutines, and fibers 
+propose efficient concurrent models “on top” of threads, the Disruptor library embraces the 
+multi-threaded approach and tries to improve it. It does so by preallocating memory, avoiding 
+excessive locks and utilising modern processors’ capabilities.</p>
+
+<p>The library creators argue that locking data between threads is the main culprit for system latency. 
+To a certain extent this has been mitigated by the Compare and Swap (CAS) capability of modern 
+processors, allowing a piece of memory to be conditionally written in a single atomic instruction. 
+This is how most <em>java.util.concurrent</em> atomic types work under the hood. 
+Even with CAS, locking seems to be a performance bottleneck, as the CPU internally must lock its 
+instructions pipeline.</p>
+
+<p>Another major problem of the producer-consumer systems is the dynamic nature of queues, which are 
+used to store data in a producer-consumer approach. Such queues can usually grow and shrink 
+dynamically resulting in runtime memory allocation and garbage collection. 
+This can significantly degrade performance. Furthermore, most queues are implemented as linked lists, 
+and thus occupy non-adjacent memory addresses. This hinders the memory locality of CPU operations and can 
+lead to many cache misses. Hence, the Disruptor library preallocates a static array of memory, which 
+it uses throughout the execution.</p>
+
+<p>The data structure they use is a ring buffer, which is implemented as an array. 
+The elements/objects of this array are preallocated. To achieve the ring effect, the remainders 
+of all indices are used. Let’s assume there is a single producer. 
+There will be a single index within the ring buffer designating the lastly written element. 
+Once the producer creates/produces an input entry, the corresponding buffer entry will be updated and 
+the counter incremented. That update should be “in-place” to avoid creating garbage. Each consumer 
+maintains its own index designating the last read item. It waits until that index precedes the index 
+of the producer and then can consume all newly produced elements. Waiting can be done in multiple 
+ways – e.g. periodically polling. When multiple producers are involved, LMAX Disruptor can use CAS 
+locking to determine the value of the producer index for each of them.</p>
+
+<p>Using this approach we can avoid locking in most circumstances and we only use a preallocated 
+fixed size data structure. However, if the producer significantly outpaces the consumers the 
+buffer won’t be enough. Hence, it’s a good idea to preallocate huge buffers of thousands or 
+even millions of elements. This will allow the consumers to catch up with a producer which 
+suddently spikes in demand. If the consumers can’t catch up given such a huge buffer, then such 
+computation would not be viable with any other queuing model as well – the only solution would 
+be to improve the throughput of the consumers.</p>
+
+<p>Apart from simple producer-consumer systems, the LMAX Disruptor can also increase the performance 
+of pipeline or workflow systems. As one node is continuously producing/streaming data, the dependent 
+nodes can consume it in real time with minimal latency.</p>
+
+<figure>
+  <img src="./Overview of Modern Concurrency and Parallelism Concepts – Nikolay Grozev_files/disruptor.png" alt="LMAX Disruptor.">
+  <figcaption>LMAX Disruptor.</figcaption>
+</figure>
+
+<h1 id="summary-and-comparison">Summary and Comparison</h1>
+
+<p>Green threads are emulated in user space. They are mostly used in environments where threads 
+can not be mapped to native OS threads. Not used too much these days. 
+Protothreads are stackless ligthweigth threads implemented in C. Won’t see them too much, 
+unless you’re programming embedded low memory devices.</p>
+
+<p>Fibers and Coroutines model the same concept. They are not truly parallel. However, they can 
+make your life easier when dealing with asynchronous I/O. You can yield the fiber/coroutime 
+after starting the I/O operation, and then resume it afterwards to update the user interface for example. 
+This is much more efficient and elegant than using a background thread.</p>
+
+<p>The Goroutines were defined in the Go programming language. 
+Each Goroutine is a function which runs asynchronously. 
+The runtime environment maps the goroutines to a pool of native OS threads in a way 
+which minimises thread blocking and context switching.</p>
+
+<p>The Actor model allows you to design a program in terms of entities/actors exchanging 
+asynchronous messages. It is inherently decentralised, without locks, and an actor-based program 
+can easily scale to multiple cores or machines. The most popular JVM actor system Akka maps 
+actors to a pool of underlying threads, similarly to goroutines.</p>
+
+<p>The LMAX Disruptor approach embraces threads, rather than trying to avoid them. 
+It reduces the locking and communication overhead of message queues in a producer-consumer relationship.</p>
+
+<blockquote>
+  <p><strong>Updated</strong>: with comments from <a href="https://plus.google.com/102336990940917072907/posts">Paul Bone</a></p>
+</blockquote>
+
+        
+        <nav class="pagination" role="navigation">
+            
+                <a href="http://nikgrozev.com/2015/07/01/reshaping-in-pandas-pivot-pivot-table-stack-and-unstack-explained-with-pictures/" class="btn" title="Reshaping in Pandas  - Pivot, Pivot-Table, Stack and Unstack explained with Pictures">Previous</a>
+            
+            
+                <a href="http://nikgrozev.com/2015/07/30/summary-of-the-oracle-jdk8-mooc/" class="btn" title="Summary of the Oracle JDK8 MOOC">Next</a>
+            
+        </nav><!-- /.pagination -->
+        
+        
+          <div id="disqus_thread" style="display: inline-block;"><iframe style="display: inline-block; width: 100%; border: 1px solid rgb(204, 204, 204); height: 80px; background: rgb(255, 255, 255);"></iframe></div><!-- /#disqus_thread -->
+          
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'nikgrozev-com'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the &lt;a href="https://disqus.com/?ref_noscript"&gt;comments powered by Disqus.&lt;/a&gt;</noscript>
+<a href="https://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        
+      </div><!-- /.entry-content -->
+    </div><!-- /.entry-wrapper -->
+
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo" class="entry-wrapper">
+    
+
+<span>© 2016 Nikolay Grozev. Powered by <a href="http://jekyllrb.com/" rel="nofollow">Jekyll</a> using the <a href="https://mademistakes.com/work/so-simple-jekyll-theme/" rel="nofollow">So Simple Theme</a>.</span>
+<div class="social-icons">
+	<a href="https://twitter.com/nikolaygrozev" title="Nikolay Grozev on Twitter" target="_blank"><i class="fa fa-twitter-square fa-2x"></i></a>
+	
+	<a href="https://plus.google.com/+NikolayGrozev" title="Nikolay Grozev on Google+" target="_blank"><i class="fa fa-google-plus-square fa-2x"></i></a>
+	<a href="https://linkedin.com/in/nikolaygrozev" title="Nikolay Grozev on LinkedIn" target="_blank"><i class="fa fa-linkedin-square fa-2x"></i></a>
+	<a href="http://stackoverflow.com/users/3682523/nikolay" title="Nikolay Grozev on StackExchange" target="_blank"><i class="fa fa-stack-exchange fa-2x"></i></a>
+	
+	
+	<a href="https://github.com/nikolayg" title="Nikolay Grozev on Github" target="_blank"><i class="fa fa-github-square fa-2x"></i></a>
+	
+  
+	
+  <a href="http://nikgrozev.com/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss-square fa-2x"></i></a>
+</div><!-- /.social-icons -->
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script type="text/javascript">
+  var BASE_URL = 'http://nikgrozev.com';
+</script>
+
+<script src="./Overview of Modern Concurrency and Parallelism Concepts – Nikolay Grozev_files/jquery.min.js.téléchargement"></script>
+<script>window.jQuery || document.write('<script src="http://nikgrozev.com/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="./Overview of Modern Concurrency and Parallelism Concepts – Nikolay Grozev_files/scripts.min.js.téléchargement"></script>
+
+
+
+
+
+
+</body></html>
