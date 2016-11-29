@@ -10,7 +10,7 @@ import subprocess
 def compute(y):
 	# http://stackoverflow.com/questions/92928/time-sleep-sleeps-thread-or-process?answertab=votes#tab-top
 	# time.sleep(0.1)
-	burn_cpu(0.1)
+	burn_cpu(0.2)
 	return pow(2, y)
 
 
@@ -66,11 +66,6 @@ def pool10():
 		futures = map(compute, range(6))
 		print([f for f in futures])
 
-@debug()
-def compute_slow(y):
-	time.sleep(.5)
-	return pow(2, y)
-
 @pause()
 @timeme()
 def pool20():
@@ -80,7 +75,7 @@ def pool20():
 - map return value: iterator vs Future for error handling
 - no GIL"""
 	with ProcessPoolExecutor(max_workers=3) as executor:
-		futures = executor.map(compute_slow, range(6), chunksize=2)
+		futures = executor.map(compute, range(6), chunksize=2)
 		print([f for f in futures])
 
 
