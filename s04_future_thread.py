@@ -78,9 +78,27 @@ def pool20():
 		futures = executor.map(compute, range(6), chunksize=2)
 		print([f for f in futures])
 
+@debug()
+async def async_compute(y):
+	# http://stackoverflow.com/questions/92928/time-sleep-sleeps-thread-or-process?answertab=votes#tab-top
+	# time.sleep(0.1)
+	burn_cpu(0.2)
+#	await asyncio.sleep(0.1)
+	return pow(2, y)
+
+@pause()
+@timeme()
+def pool30():
+	"""- sample using coroutine spawned in parallel
+- no difference in total duration"""
+	loop = asyncio.get_event_loop()
+	tasks = [asyncio.ensure_future(async_compute(i)) for i in range(6)]
+	loop.run_until_complete(asyncio.gather(*tasks))
+	loop.close()
 
 pool01()
 pool02()
 pool03()
 pool10()
 pool20()
+pool30()

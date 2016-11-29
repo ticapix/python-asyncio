@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html dir="ltr" class="redesign " data-ffo-opensanslight="true" data-ffo-opensans="true" lang="fr"><head prefix="og: http://ogp.me/ns#">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <script async="" src="Promise%20-%20JavaScript%20_%20MDN_fichiers/analytics.js"></script><script>(function(d) { d.className = d.className.replace(/\bno-js/, ''); })(document.documentElement);</script>
+  
+    
+  
+
+  
+  <title>Promise - JavaScript | MDN</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="index, follow">
+    <link rel="home" href="https://developer.mozilla.org/fr/">
+    <link rel="copyright" href="#copyright">
+  
+
+  
+    
+    
+    <link href="Promise%20-%20JavaScript%20_%20MDN_fichiers/mdn.css" rel="stylesheet" type="text/css">
+
+    
+  
+    <link href="Promise%20-%20JavaScript%20_%20MDN_fichiers/wiki.css" rel="stylesheet" type="text/css">
+
+    
+
+    <!-- common social tags -->
+    
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://developer.cdn.mozilla.net/static/img/opengraph-logo.dc4e08e2f6af.png">
+    <meta property="og:site_name" content="Mozilla Developer Network">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:image" content="https://developer.cdn.mozilla.net/static/img/opengraph-logo.dc4e08e2f6af.png">
+    <meta name="twitter:site" content="@MozDevNet">
+    <meta name="twitter:creator" content="@MozDevNet">
+    <link rel="search" type="application/opensearchdescription+xml" href="https://developer.mozilla.org/fr/search/xml" title="Mozilla Developer Network">
+  
+
+  <!-- third-generation iPad with high-resolution Retina display: -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://developer.cdn.mozilla.net/static/img/favicon144.a6e4162070f4.png">
+  <!-- iPhone with high-resolution Retina display: -->
+  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="https://developer.cdn.mozilla.net/static/img/favicon114.0e9fabd44f85.png">
+  <!-- first- and second-generation iPad: -->
+  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="https://developer.cdn.mozilla.net/static/img/favicon72.8ff9d87c82a0.png">
+  <!-- non-Retina iPhone, iPod Touch, and Android 2.1+ devices: -->
+  <link rel="apple-touch-icon-precomposed" href="https://developer.cdn.mozilla.net/static/img/favicon57.a2490b9a2d76.png">
+  <!-- basic favicon -->
+  
+    
+  
+  <link rel="shortcut icon" href="https://developer.cdn.mozilla.net/static/img/favicon32.e02854fdcf73.png">
+  <!--[if IE]>
+  <meta http-equiv="imagetoolbar" content="no">
+  <script type="text/javascript" src="https://developer.cdn.mozilla.net/static/build/js/html5shiv.3948ccddab6f.js" charset="utf-8"></script>
+  <![endif]-->
+
+  
+  <link rel="alternate" type="application/json" href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Promise$json">
+  <link rel="canonical" href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Promise">
+
+  
+    
+      <link rel="alternate" hreflang="en-US" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" title="Promise">
+    
+      <link rel="alternate" hreflang="de" href="https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Promise" title="Promise">
+    
+      <link rel="alternate" hreflang="es" href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Promesa" title="Promesa">
+    
+      <link rel="alternate" hreflang="id" href="https://developer.mozilla.org/id/docs/Web/JavaScript/Reference/Global_Objects/Promise" title="Promise">
+    
+      <link rel="alternate" hreflang="it" href="https://developer.mozilla.org/it/docs/Web/JavaScript/Reference/Global_Objects/Promise" title="Promise">
+    
+      <link rel="alternate" hreflang="ja" href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Promise" title="Promise">
+    
+      <link rel="alternate" hreflang="ko" href="https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Promise" title="Promise">
+    
+      <link rel="alternate" hreflang="nl" href="https://developer.mozilla.org/nl/docs/Web/JavaScript/Reference/Global_Objects/Promise" title="Promise">
+    
+      <link rel="alternate" hreflang="pt-BR" href="https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Promise" title="Promise">
+    
+      <link rel="alternate" hreflang="ru" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Promise" title="Promise">
+    
+      <link rel="alternate" hreflang="tr" href="https://developer.mozilla.org/tr/docs/Web/JavaScript/Reference/Global_Objects/Promise" title="Promise">
+    
+      <link rel="alternate" hreflang="vi" href="https://developer.mozilla.org/vi/docs/Web/JavaScript/Reference/Global_Objects/Promise" title="Promise">
+    
+      <link rel="alternate" hreflang="zh-CN" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise" title="Promise">
+    
+  
+
+  <!-- document-specific social tags -->
+  <meta property="og:title" content="Promise">
+  <meta property="og:url" content="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Promise">
+  <meta name="twitter:url" content="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Promise">
+  <meta name="twitter:title" content="Promise">
+  
+  <meta property="og:description" content="L'interface Promise représente un intermédiaire ( proxy ) vers une valeur qui n'est pas nécessairement connue au moment de sa création. Cela permet d'associer des gestionnaires au succès éventuel d'une action asynchrone et à la raison d'une erreur. Ainsi, des méthodes asynchrones renvoient des valeurs comme les méthodes synchrones, la seule différence est que la valeur retournée par la méthode asynchrone est une promesse (d'avoir une valeur plus tard).">
+  <meta name="description" content="L'interface Promise représente un intermédiaire ( proxy ) vers une valeur qui n'est pas nécessairement connue au moment de sa création. Cela permet d'associer des gestionnaires au succès éventuel d'une action asynchrone et à la raison d'une erreur. Ainsi, des méthodes asynchrones renvoient des valeurs comme les méthodes synchrones, la seule différence est que la valeur retournée par la méthode asynchrone est une promesse (d'avoir une valeur plus tard).">
+  <meta name="twitter:description" content="L'interface Promise représente un intermédiaire ( proxy ) vers une valeur qui n'est pas nécessairement connue au moment de sa création. Cela permet d'associer des gestionnaires au succès éventuel d'une action asynchrone et à la raison d'une erreur. Ainsi, des méthodes asynchrones renvoient des valeurs comme les méthodes synchrones, la seule différence est que la valeur retournée par la méthode asynchrone est une promesse (d'avoir une valeur plus tard).">
+  
+
+  
+  <script type="text/javascript">
+    
+      var document_saved = 0;
+    
+  </script><span>@media print {#ghostery-purple-box {display:none !important}}</span>
+
+
+
+  
+    
+
+<script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-36116321-5', 'mozilla.org');
+    ga('set', 'anonymizeIp', true);
+
+    
+
+    // dimension9 == "Section editing"
+    
+        // dimension12 == 'Page Revision"
+        ga('set', 'dimension12', '1143165');
+
+    (function() {
+        // http://cfsimplicity.com/61/removing-analytics-clutter-from-campaign-urls
+        var win = window;
+        var removeUtms = function(){
+            var location = win.location;
+            if (location.href.indexOf('utm') != -1 && win.history.replaceState) {
+                win.history.replaceState({}, '', location.pathname);
+            }
+        };
+
+        ga('send', 'pageview', {'hitCallback': removeUtms});
+    })();
+</script>
+
+  
+<script async="" data-manual="true" src="Promise%20-%20JavaScript%20_%20MDN_fichiers/syntax-prism.js"></script></head>
+<body data-slug="Web/JavaScript/Reference/Objets_globaux/Promise" contextmenu="edit-history-menu" data-search-url="" class="document  ">
+
+  <script type="text/javascript">
+    (function(win) {
+        'use strict';
+
+        
+            (function(){
+  var FLAGS = {
+    'compat_api': false,'iperceptions': false,'kumaediting': false,'page_move': false,'registration_disabled': false,'search_suggestions': false,'section_edit': false,'sg_task_completion': false,'spam_admin_override': false,'spam_checks_enabled': true,'spam_spammer_override': false,'spam_submissions_enabled': false,'spam_testing_mode': false,'wiki_samples': true,'wiki_spam_exempted': false,'wiki_spam_training': false
+    },
+    SWITCHES = {
+    'wiki_error_on_delete': false,'wiki_force_immediate_rendering': false,'enable_optimizely': false,'welcome_email': true,'application_ACAO': true,'store_revision_ips': true,'dumb_doc_urls': true,'newsletter': true,'newsletter_article': true
+    },
+    SAMPLES = {
+    
+    };
+  window.waffle = {
+    "flag_is_active": function waffle_flag(flag_name) {
+      
+      return !!FLAGS[flag_name];
+    },
+    "switch_is_active": function waffle_switch(switch_name) {
+      
+      return !!SWITCHES[switch_name];
+    },
+    "sample_is_active": function waffle_sample(sample_name) {
+      
+      return !!SAMPLES[sample_name];
+    },
+    "FLAGS": FLAGS,
+    "SWITCHES": SWITCHES,
+    "SAMPLES": SAMPLES
+  };
+})();
+
+        
+
+        // This needs to be set before ckeditor.js loads
+        window.CKEDITOR_BASEPATH = '/static/js/libs/ckeditor/build/ckeditor/';
+
+        // This represents the site configuration
+        win.mdn = {
+            // Properties and settings for CKEditor will go here
+            ckeditor: {},
+            // Feature test results and methods will be placed here
+            features: {},
+            // The path to static assets (images, CSS, JS) in MDN
+            staticPath: 'https://developer.cdn.mozilla.net/static/',
+            // Optimizely API
+            optimizely: win['optimizely'] || [],
+            // Site notifications
+            
+            notifications: [],
+            
+            // Wiki-specific settings will be placed here
+            wiki: {
+                autosuggestTitleUrl: '/fr/docs/get-documents'
+            },
+            // Assets that need to be dynamically injected
+            assets: {
+                css: {
+                    'editor-content': ['https://developer.cdn.mozilla.net/static/build/styles/editor-content.50e1e1191368.css',],
+                    'wiki-compat-tables': ['https://developer.cdn.mozilla.net/static/build/styles/wiki-compat-tables.a042fac0d66c.css',]
+                },
+                js: {
+                    'syntax-prism': ['https://developer.cdn.mozilla.net/static/build/js/syntax-prism.7a66ddfa68bf.js',],
+                    'wiki-compat-tables': ['https://developer.cdn.mozilla.net/static/build/js/wiki-compat-tables.14ce5dcb2c3d.js',]
+                }
+            }
+        };
+    })(this);
+</script>
+
+  
+  <div class="global-notice">
+    <div class="wrap center">
+      
+        <p><bdi>MDN will be unavailable on Thursday December 1st at 17:00-18:00 Pacific (Dec. 2 01:00-02:00 UTC) for database maintenance.</bdi></p>
+      
+    </div>
+  </div>
+
+
+  <ul id="nav-access">
+    <li><a href="#document-main" id="skip-main">Aller au contenu principal</a></li>
+    <li><a id="skip-language" href="#language">Choisir la langue</a></li>
+    <li><a href="#q" id="skip-search">Aller à la recherche</a></li>
+  </ul>
+
+  <!-- Header -->
+  <header id="main-header"><div class="center">
+
+    <div id="tabzilla">
+        <a href="https://www.mozilla.org/" class="no-track">mozilla</a>
+    </div>
+
+    <div class="clear header-clear"></div>
+
+
+    <a href="https://developer.mozilla.org/fr/" class="logo">Mozilla Developer Network</a>
+
+
+    <div id="nav-sec">
+        
+                  <ul>
+                  <li><div class="login">
+    
+      
+       <a href="https://developer.mozilla.org/users/github/login/?next=%2Ffr%2Fdocs%2FWeb%2FJavaScript%2FReference%2FObjets_globaux%2FPromise" class="login-link js-login-link" data-service="GitHub">
+        Connexion
+        <i class="icon-github" aria-hidden="true"></i>
+      </a>
+    
+</div></li>
+                </ul>
+        
+    </div>
+
+    <nav id="main-nav" role="navigation"><ul><li><a href="https://developer.mozilla.org/fr/docs/Web">Technologies web<i aria-hidden="true" class="icon-caret-down"></i></a>
+
+        <div class="submenu submenu-cols-2 js-submenu" id="nav-platform-submenu">
+          <div class="submenu-column">
+            <div class="title">Technologies</div>
+            <ul>
+              <li><a href="https://developer.mozilla.org/fr/docs/Web/HTML">HTML</a></li>
+              <li><a href="https://developer.mozilla.org/fr/docs/Web/CSS">CSS</a></li>
+              <li><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript">JavaScript</a></li>
+              <li><a href="https://developer.mozilla.org/fr/docs/Web/Guide/Graphics">Infographies</a></li>
+              <li><a href="https://developer.mozilla.org/fr/docs/Web/HTTP">HTTP</a></li>
+              <li><a href="https://developer.mozilla.org/fr/docs/Web/API">APIs / DOM</a></li>
+              <li><a href="https://developer.mozilla.org/fr/docs/Mozilla/Add-ons/WebExtensions">WebExtensions</a></li>
+              <li><a href="https://developer.mozilla.org/fr/docs/Web/MathML">MathML</a></li>
+            </ul>
+          </div><div class="submenu-column last">
+            <div class="title">Guides et références</div>
+            <ul>
+              <li><a href="https://developer.mozilla.org/fr/docs/Learn">Apprendre le développement web</a></li>
+              <li><a href="https://developer.mozilla.org/fr/docs/Web/Tutorials">Tutoriels</a></li>
+              <li><a href="https://developer.mozilla.org/fr/docs/Web/Reference">Références</a></li>
+              <li><a href="https://developer.mozilla.org/fr/docs/Web/Guide">Guides pour développeurs</a></li>
+              <li><a href="https://developer.mozilla.org/fr/docs/Web/Accessibility">Accessibilité</a></li>
+              <li><a href="https://developer.mozilla.org/fr/docs/Games">Développement de jeux</a></li>
+              <li><a href="https://developer.mozilla.org/fr/docs/Web">... plus de docs</a></li>
+            </ul>
+          </div>
+        </div>
+      </li><li><a href="https://developer.mozilla.org/fr/docs/Zones">Documentation de Mozilla<i aria-hidden="true" class="icon-caret-down"></i></a>
+
+        <div class="submenu js-submenu" id="nav-zones-submenu">
+          <div class="submenu-column">
+            <ul>
+              <li><a href="https://developer.mozilla.org/fr/docs/Mozilla/Add-ons">Modules</a></li>
+              <li><a href="https://developer.mozilla.org/fr/docs/Mozilla/Firefox">Firefox</a></li>
+            </ul>
+          </div>
+        </div>
+      </li><li><a href="https://developer.mozilla.org/fr/docs/Tools">Outils de développement</a></li><li><a href="https://developer.mozilla.org/fr/docs/MDN/Feedback">Votre avis<i aria-hidden="true" class="icon-caret-down"></i></a>
+
+        <div class="submenu js-submenu" id="nav-contact-submenu">
+          <div class="submenu-column">
+            <ul>
+                <li><a href="https://support.mozilla.org/">Demander de l'aide pour Firefox<i aria-hidden="true" class="icon-external-link"></i></a></li>
+                <li><a href="http://stackoverflow.com/">Demander de l'aide pour le développement web<i aria-hidden="true" class="icon-external-link"></i></a></li>
+            </ul>
+            <ul>
+              <li><a href="https://developer.mozilla.org/fr/docs/MDN/Community">Rejoignez la communauté MDN</a></li>
+              <li><a target="_blank" href="https://bugzilla.mozilla.org/form.doc?bug_file_loc=https%3A//developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Promise">Signaler un problème de contenu<i aria-hidden="true" class="icon-external-link"></i></a></li>
+              <li><a target="_blank" href="https://bugzilla.mozilla.org/form.mdn">Signaler un bug<i aria-hidden="true" class="icon-external-link"></i></a></li>
+            </ul>
+          </div>
+        </div>
+
+      </li><li class="nav-search-link"><a href="https://developer.mozilla.org/fr/search" title="Search"><i aria-hidden="true" class="icon-search"></i></a></li><li class="main-nav-search"><form action="/fr/search" method="get" role="search">
+        <div class="search-wrap">
+          <label for="main-q" class="offscreen">Rechercher</label>
+          <input id="main-q" name="q" placeholder="Rechercher" data-value="" type="search">
+          <span class="search-trigger"><i aria-hidden="true" class="icon-search"></i></span>&nbsp;
+          <button type="submit" class="offscreen">Rechercher</button>
+        </div>
+      </form></li></ul></nav>
+  </div></header>
+
+  <!-- Content will go here -->
+  <main id="content"><div class="center clear">
+  
+
+   <!-- end is_zone -->
+
+
+    <div class="wiki-main-content" id="document-main" role="main"><div class="center">
+      
+      <div class="article-meta">
+        <!-- action buttons -->
+        
+
+  
+    
+    
+  
+
+  
+    
+  
+
+  
+
+  <ul class="page-buttons" data-sticky="false">
+      
+      <li><button id="languages-menu" class="transparent" aria-haspopup="true" aria-owns="languages-menu-submenu" aria-expanded="false"><span>Langues</span><i aria-hidden="true" class="icon-language"></i></button>
+
+        <div class="submenu js-submenu" id="languages-menu-submenu">
+          <div class="submenu-column">
+            <ul id="translations">
+              
+                
+                
+                
+                  <li><bdi><a rel="internal" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" title="Anglais américain">English (US) (en-US)</a></bdi></li>
+                
+                  <li><bdi><a rel="internal" href="https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Promise" title="Allemand">Deutsch (de)</a></bdi></li>
+                
+                  <li><bdi><a rel="internal" href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Promesa" title="Espagnol">Español (es)</a></bdi></li>
+                
+                  <li><bdi><a rel="internal" href="https://developer.mozilla.org/id/docs/Web/JavaScript/Reference/Global_Objects/Promise" title="Indonésien">Bahasa Indonesia (id)</a></bdi></li>
+                
+                  <li><bdi><a rel="internal" href="https://developer.mozilla.org/it/docs/Web/JavaScript/Reference/Global_Objects/Promise" title="Italien">Italiano (it)</a></bdi></li>
+                
+                  <li><bdi><a rel="internal" href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Promise" title="Japonais">日本語 (ja)</a></bdi></li>
+                
+                  <li><bdi><a rel="internal" href="https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Promise" title="Coréen">한국어 (ko)</a></bdi></li>
+                
+                  <li><bdi><a rel="internal" href="https://developer.mozilla.org/nl/docs/Web/JavaScript/Reference/Global_Objects/Promise" title="Néerlandais">Nederlands (nl)</a></bdi></li>
+                
+                  <li><bdi><a rel="internal" href="https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Promise" title="Portugais brésilien">Português (do&nbsp;Brasil) (pt-BR)</a></bdi></li>
+                
+                  <li><bdi><a rel="internal" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Promise" title="Russe">Русский (ru)</a></bdi></li>
+                
+                  <li><bdi><a rel="internal" href="https://developer.mozilla.org/tr/docs/Web/JavaScript/Reference/Global_Objects/Promise" title="Turc">Türkçe (tr)</a></bdi></li>
+                
+                  <li><bdi><a rel="internal" href="https://developer.mozilla.org/vi/docs/Web/JavaScript/Reference/Global_Objects/Promise" title="Vietnamien">Tiếng Việt (vi)</a></bdi></li>
+                
+                  <li><bdi><a rel="internal" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise" title="Chinois (simplifié)">中文 (简体) (zh-CN)</a></bdi></li>
+                
+              
+
+              
+            </ul>
+          </div>
+        </div>
+      </li>
+
+      
+      <li class="page-buttons-edit"><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Promise$edit" class="button" data-optimizely-hook="button-edit-doc" id="edit-button">Modifier<i aria-hidden="true" class="icon-pencil"></i></a></li>
+      
+
+        
+
+        <li><button id="advanced-menu" class="only-icon" aria-haspopup="true" aria-owns="advanced-menu-submenu" aria-expanded="false"><span>Avancé</span><i aria-hidden="true" class="icon-cog"></i></button>
+        <div class="submenu js-submenu" id="advanced-menu-submenu">
+          <!-- this page -->
+          <div class="submenu-column">
+            <div class="title">Avancé</div>
+            <ul>
+                <li><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Promise$history" rel="nofollow, noindex">Historique</a></li>
+                
+                
+                
+
+
+                
+
+                
+                
+                
+                <li class="page-print"><a href="#" onclick="return window.print();">Imprimer cet article</a></li>
+            </ul>
+          </div>
+        </div>
+  </li></ul>
+
+        <!-- crumbs -->
+        
+  <nav class="crumbs" role="navigation"><ol xmlns:v="http://rdf.data-vocabulary.org/#" aria-label="fils d'ariane">
+    <li typeof="v:Breadcrumb"><a href="https://developer.mozilla.org/fr" rel="v:url" property="v:title">MDN</a></li>
+    
+      <li class="crumb" typeof="v:Breadcrumb"><a href="https://developer.mozilla.org/fr/docs/Web" rel="v:url" property="v:title">Technologies web pour développeurs</a></li>
+    
+      <li class="crumb" typeof="v:Breadcrumb"><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript" rel="v:url" property="v:title">JavaScript</a></li>
+    
+      <li class="crumb" typeof="v:Breadcrumb"><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference" rel="v:url" property="v:title">Référence JavaScript</a></li>
+    
+      <li class="crumb" typeof="v:Breadcrumb"><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux" rel="v:url" property="v:title">Objets globaux</a></li>
+    
+    <li class="crumb" typeof="v:Breadcrumb" property="v:title">Promise</li>
+  </ol></nav>
+      </div>
+
+      <!-- heading -->
+      <div id="wiki-document-head" class="document-head">
+          <span class="from-search-previous-box">
+            <a class="button from-search-previous only-icon disabled" title="Résultat de la recherche précédente" data-empty-title="Aucun résultat de recherche précédente"><i aria-hidden="true" class="icon-chevron-left"></i></a>
+          </span>
+          <span class="from-search-navigate-wrap">
+            <a href="#" class="from-search-navigate"><span class="from-search-navigate-up"><i aria-hidden="true" class="icon-double-angle-up"></i></span><span class="from-search-navigate-down"><i aria-hidden="true" class="icon-double-angle-down"></i></span></a>
+          </span>
+          <div class="from-search-toc submenu">
+            <span class="title">Vos résultats de recherche</span>
+            <ol></ol>
+          </div>
+          <span class="from-search-next-box">
+            <a class="button from-search-next only-icon disabled" title="Prochain résultat de recherche" data-empty-title="Aucun résultat de recherche précédente"><i aria-hidden="true" class="icon-chevron-right"></i></a>
+          </span>
+
+        
+        <div class="contributor-avatars" data-all-text="voir tous les contributeurs" data-alternate-message="masquer les contributeurs" data-has-hidden="1">
+            <ul>
+            
+                <li class="shown">
+                <a href="https://developer.mozilla.org/fr/profiles/SphinxKnight" title="Voir le profil de SphinxKnight">
+                <img src="Promise%20-%20JavaScript%20_%20MDN_fichiers/8fb358ea9b7af22f5021a29e122ea069.jpg" class="avatar loaded" alt="SphinxKnight" height="34" width="34"></a>
+                </li>
+            
+                <li class="shown">
+                <a href="https://developer.mozilla.org/fr/profiles/VivienZo" title="Voir le profil de VivienZo">
+                <img src="Promise%20-%20JavaScript%20_%20MDN_fichiers/9e520123c79a573f44edca1d89cb6dfd.jpg" class="avatar loaded" alt="VivienZo" height="34" width="34"></a>
+                </li>
+            
+                <li class="shown">
+                <a href="https://developer.mozilla.org/fr/profiles/sammy44nts" title="Voir le profil de sammy44nts">
+                <img src="Promise%20-%20JavaScript%20_%20MDN_fichiers/fba7c1dceed4c5714c606669d4e89a0d.jpg" class="avatar loaded" alt="sammy44nts" height="34" width="34"></a>
+                </li>
+            
+                <li class="shown">
+                <a href="https://developer.mozilla.org/fr/profiles/Mr21" title="Voir le profil de Mr21">
+                <img src="Promise%20-%20JavaScript%20_%20MDN_fichiers/3b9e1ea0e57a3e027e455259d9e911b9.jpg" class="avatar loaded" alt="Mr21" height="34" width="34"></a>
+                </li>
+            
+                <li class="shown">
+                <a href="https://developer.mozilla.org/fr/profiles/toons3000" title="Voir le profil de toons3000">
+                <img src="Promise%20-%20JavaScript%20_%20MDN_fichiers/6b40e6da088197a4dbf1ad15266a27fc.png" class="avatar loaded" alt="toons3000" height="34" width="34"></a>
+                </li>
+            
+                <li class="shown">
+                <a href="https://developer.mozilla.org/fr/profiles/teoli" title="Voir le profil de teoli">
+                <img src="Promise%20-%20JavaScript%20_%20MDN_fichiers/d0d90148e08e3b64ccf75c46f31442c5.png" class="avatar loaded" alt="teoli" height="34" width="34"></a>
+                </li>
+            
+                <li class="hidden">
+                <a href="https://developer.mozilla.org/fr/profiles/neveldo" title="Voir le profil de neveldo">
+                <noscript data-width="34" data-height="34" data-class="avatar" data-alt="neveldo" data-src="https://secure.gravatar.com/avatar/9d5f6ec9638803bb9857956218e2271f?s=34&amp;r=pg&amp;d=https%3A%2F%2Fdeveloper.cdn.mozilla.net%2Fmedia%2Fimg%2Favatar.png">neveldo</noscript></a>
+                </li>
+            
+                <li class="hidden">
+                <a href="https://developer.mozilla.org/fr/profiles/nicodel" title="Voir le profil de nicodel">
+                <noscript data-width="34" data-height="34" data-class="avatar" data-alt="nicodel" data-src="https://secure.gravatar.com/avatar/5c59bb2574407b776cb7f6b266debd53?s=34&amp;r=pg&amp;d=https%3A%2F%2Fdeveloper.cdn.mozilla.net%2Fmedia%2Fimg%2Favatar.png">nicodel</noscript></a>
+                </li>
+            
+                <li class="hidden">
+                <a href="https://developer.mozilla.org/fr/profiles/Goofy" title="Voir le profil de Goofy">
+                <noscript data-width="34" data-height="34" data-class="avatar" data-alt="Goofy" data-src="https://secure.gravatar.com/avatar/356e2e6212b21319721110a7688f5766?s=34&amp;r=pg&amp;d=https%3A%2F%2Fdeveloper.cdn.mozilla.net%2Fmedia%2Fimg%2Favatar.png">Goofy</noscript></a>
+                </li>
+            
+                <li class="hidden">
+                <a href="https://developer.mozilla.org/fr/profiles/P45QU10U" title="Voir le profil de P45QU10U">
+                <noscript data-width="34" data-height="34" data-class="avatar" data-alt="P45QU10U" data-src="https://secure.gravatar.com/avatar/6e0143c0b7292cdf4ec26f9ac999d69f?s=34&amp;r=pg&amp;d=https%3A%2F%2Fdeveloper.cdn.mozilla.net%2Fmedia%2Fimg%2Favatar.png">P45QU10U</noscript></a>
+                </li>
+            
+            </ul>
+        <button id="contributors-toggle" type="button" class="transparent" data-alternate-message="masquer les contributeurs">voir tous les contributeurs</button></div>
+        
+
+        <h1><wbr>Promise</h1>
+
+      </div>
+      
+
+      <!-- start the main content container -->
+        <div id="wiki-column-container" class="wiki-right-present wiki-left-present">
+
+          <!-- content row with three strips -->
+          <div class="column-container column-container-reverse">
+
+            
+              <!-- TOC, approvals, etc -->
+              <div class="column-strip wiki-column" id="wiki-right">
+              
+              <!-- table of contents -->
+              <div id="toc" class="toc toggleable fixed" style="width: 289px; max-height: 869px; top: 0px;">
+                <a href="#toc" class="title toggler" data-open-icon="icon-plus" data-closed-icon="icon-minus" aria-haspopup="true">Dans cet article<i class="icon-minus"></i></a>
+                <ol class="toggle-container">
+                  <li><a href="#Syntaxe" rel="internal">Syntaxe</a><ol><li><a href="#Param%C3%A8tres" rel="internal">Paramètres</a></li></ol></li><li><a href="#Description" rel="internal">Description</a></li><li><a href="#Propri%C3%A9t%C3%A9s" rel="internal">Propriétés</a></li><li><a href="#M%C3%A9thodes" rel="internal">Méthodes</a></li><li><a href="#Promise_prototype" rel="internal"><code>Promise</code> prototype</a><ol><li><a href="#Propri%C3%A9t%C3%A9s_2" rel="internal">Propriétés</a></li><li><a href="#M%C3%A9thodes_2" rel="internal">Méthodes</a></li></ol></li><li><a href="#Exemples" rel="internal">Exemples</a><ol><li><a href="#Cr%C3%A9er_un_objet_Promise" rel="internal">Créer un objet <code>Promise</code></a></li><li><a href="#Charger_une_image_en_XHR" rel="internal">Charger une image en XHR</a></li></ol></li><li><a href="#Sp%C3%A9cifications" rel="internal">Spécifications</a></li><li><a href="#Compatibilit%C3%A9_des_navigateurs" rel="internal">Compatibilité des navigateurs</a></li><li><a href="#Voir_aussi" rel="internal">Voir aussi</a>
+                </li></ol>
+              </div>
+              
+              </div>
+            
+
+            
+            
+              
+            
+
+            <!-- center: main article content -->
+            <div id="wiki-content" class="column-half wiki-column text-content">
+
+              
+
+              
+
+              
+                
+                
+                
+              
+              
+
+              <!-- just the article content -->
+              <article id="wikiArticle">
+                
+                  
+                    <div><section id="Quick_Links" class="Quick_links"><!-- --></section></div>
+
+<p>L'objet <code><strong>Promise</strong></code> (pour « promesse ») est
+ utilisé pour réaliser des traitements de façon asynchrone. Une promesse
+ représente une valeur qui peut être disponible maintenant, dans le 
+futur voire jamais.</p>
+
+<h2 id="Syntaxe">Syntaxe</h2>
+
+<pre class="syntaxbox">new Promise( /* exécuteur */ function(resolve, reject) { ... } );</pre>
+
+<h3 id="Paramètres">Paramètres</h3>
+
+<dl>
+ <dt><code>exécuteur</code></dt>
+ <dd>Une fonction à laquelle on passera deux arguments : <code>resolve</code> et <code>reject</code>. Cette fonction est exécutée immédiatement par l'implémentation de <strong><code>Promise</code></strong> qui fournit les fonctions <code>resolve</code> et <code>reject</code> (elle est exécutée avant que le constructeur <strong><code>Promise</code></strong> ait renvoyé l'objet créé). Les fonctions <code>resolve</code> et <code>reject</code>,
+ lorsqu'elles sont appelées, permettent respectivement de tenir ou de 
+rompre la promesse. On attend de l'exécuteur qu'il démarre un travail 
+asynchrone puis, une fois le travail terminé, appelle la fonction <code>resolve</code> (si tout s'est bien passé) ou la fonction <code>reject</code> (lorsqu'il y a eu un problème) pour définir l'état final de la promesse.<br>
+ Si une erreur est générée par l'exécuteur, la promesse est rompue et la valeur de retour de l'exécuteur est ignorée.</dd>
+</dl>
+
+<h2 id="Description">Description</h2>
+
+<p>L'interface <strong><code>Promise</code></strong> représente un intermédiaire (<em>proxy</em>)
+ vers une valeur qui n'est pas nécessairement connue au moment de sa 
+création. Cela permet d'associer des gestionnaires au succès éventuel 
+d'une action asynchrone et à la raison d'une erreur. Ainsi, des méthodes
+ asynchrones renvoient des valeurs comme les méthodes synchrones, la 
+seule différence est que la valeur retournée par la méthode asynchrone 
+est une promesse (d'avoir une valeur plus tard).</p>
+
+<p>Une <code>Promise</code> est dans un de ces états :</p>
+
+<ul>
+ <li><em>pending (en attente)</em> : état initial, la promesse n'est ni remplie, ni rompue ;</li>
+ <li><em>fulfilled (tenue</em>) : l'opération a réussi ;</li>
+ <li><em>rejected (rompue)</em> : l'opération a échoué ;</li>
+ <li><em>settled (acquitée)</em> : la promesse est tenue ou rompue mais elle n'est plus en attente.</li>
+</ul>
+
+<p>Une promesse en attente peut être <em>tenue</em> avec une valeur ou <em>rompue</em>
+ avec une raison (erreur). Quand on arrive à l'une des deux situations, 
+les gestionnaires associés lors de l'appel de la méthode <code>then</code>
+ sont alors appelés. (Si la promesse a déjà été tenue ou rompue lorsque 
+le gestionnaire est attaché à la promesse, le gestionnaire est appelé. 
+Cela permet qu'il n'y ait pas de situation de compétition entre une 
+opération asynchrone en cours et les gestionnaires ajoutés).</p>
+
+<p>Les méthodes <a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Promise/then" title="La méthode then() renvoie un objet Promise. Elle peut prendre jusqu'à deux arguments qui sont deux fonctions callback à utiliser en cas de complétion ou d'échec de la Promise."><code>Promise.prototype.then()</code></a> et <a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Promise/catch" title="La méthode catch() renvoie un objet Promise et ne traite que des cas où la promesse initiale est rejetée. Elle a le même effet qu'un appel à Promise.prototype.then(undefined, siRejetée)."><code>Promise.prototype.catch()</code></a> renvoient des promesses et peuvent ainsi être chaînées. C'est ce qu'on appelle une <em>composition</em>.</p>
+
+<p><img src="Promise%20-%20JavaScript%20_%20MDN_fichiers/promises.png" style="height: 297px; width: 801px;" alt=""></p>
+
+<div class="note">
+<p><strong>Note</strong>: Une promesse est dans l'état <em>settled </em>(acquittée) qu'elle soit tenue ou rompue mais plus en attente. Le terme <em>resolved</em>
+ (résolue) est aussi utilisé concernant les promesses — cela signifie 
+que la promesse est acquittée ou bien enfermée dans une chaine de 
+promesse. Le billet de Domenic Denicola, <a href="https://github.com/domenic/promises-unwrapping/blob/master/docs/states-and-fates.md" class="external external-icon">States and fates (en anglais)</a>, contient de plus amples détails sur la terminologie utilisée.</p>
+</div>
+
+<div class="warning">
+<p><strong>Attention :</strong> D'autres langages utilisent des mécanismes d'évaluation à la volée (<em>lazy evaluation</em>) et de déport des calculs (<em>deferring computations</em>). Ces mécanismes sont également intitulés promesses (<em>promises</em>).
+ En JavaScript, les promesses correspondent à des processus déjà lancés 
+et qui peuvent être chaînés avec des fonctions de retour. Si vous 
+cherchez à retarder l'évaluation, vous pouvez utiliser les fonctions 
+fléchées sans arguments (ex. <code>f = () =&gt; expression</code>) afin de créer une expression à évaluer plus tard et utiliser <code>f()</code> pour l'évaluer au moment voulu.</p>
+</div>
+
+<h2 id="Propriétés">Propriétés</h2>
+
+<dl>
+ <dt><code>Promise.length</code></dt>
+ <dd>Une propriété de longueur qui vaut 1 (le nombre d'arguments pour le constructeur).</dd>
+ <dt><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Promise/prototype" title="La propriété Promise.prototype représente le prototype pour le constructeur Promise."><code>Promise.prototype</code></a></dt>
+ <dd>Cette propriété représente le prototype du constructeur <code>Promise</code>.</dd>
+</dl>
+
+<h2 id="Méthodes">Méthodes</h2>
+
+<dl>
+ <dt><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Promise/all" title="La méthode Promise.all(itérable) renvoie une promesse (promise) qui est résolue/tenue lorsque toutes les promesses de l'itérable ont été résolues/tenues."><code>Promise.all(itérable)</code></a></dt>
+ <dd>Renvoie une promesse tenue lorsque toutes les promesses de 
+l'argument itérable&nbsp;sont tenues ou une promesse rompue dès qu'une 
+promesse de l'argument itérable est rompue. Si la promesse est tenue, 
+elle est résolue avec un tableau contenant les valeurs de résolution des
+ différentes promesses contenues dans l'itérable (dans le même ordre que
+ celui-ci). Si la promesse est rompue, elle contient la raison de la 
+rupture de la part de la promesse en cause, contenue dans l'itérable. 
+Cette méthode est utile pour agréger les résultats de plusieurs 
+promesses tous ensemble.</dd>
+ <dt><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Promise/race" title="La méthode Promise.race(itérable) renvoie une promesse qui est résolue ou rejetée dès qu'une des promesses de l'itérables est résolue ou rejetée. La valeur (dans le cas de la résolution) ou la raison (dans le cas d'un échec) utilisée est celle de la promesse de l'itérable qui est resolue/qui échoue."><code>Promise.race(itérable)</code></a></dt>
+ <dd>Renvoie une promesse qui est tenue ou rompue dès que l'une des 
+promesses de l'itérable est tenue ou rompue avec la valeur ou la raison 
+correspondante.</dd>
+</dl>
+
+<dl>
+ <dt><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Promise/reject" title="La méthode Promise.reject(raison) renvoie un objet Promise qui est rejeté (la promesse n'est pas tenue) à cause d'une raison donnée."><code>Promise.reject(raison)</code></a></dt>
+ <dd>Renvoie un objet <code>Promise</code> qui est rompue avec la raison donnée.</dd>
+</dl>
+
+<dl>
+ <dt><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Promise/resolve" title="Une promesse (Promise qui est résolue avec la valeur indiquée en argument."><code>Promise.resolve(valeur)</code></a></dt>
+ <dd>Renvoie un objet <code>Promise</code> qui est tenue (résolue) avec la valeur donnée. Si la valeur possède une méthode <code>then</code>,
+ la promesse renvoyée « suivra » cette méthode pour arriver dans son 
+état, sinon la promesse renvoyée sera tenue avec la valeur fournie. 
+Généralement, quand on veut savoir si une valeur est une promesse, on 
+utilisera <a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Promise/resolve" title="Une promesse (Promise qui est résolue avec la valeur indiquée en argument."><code>Promise.resolve(valeur)</code></a> et on travaillera avec la valeur de retour en tant que promesse.</dd>
+</dl>
+
+<h2 id="Promise_prototype"><code>Promise</code> prototype</h2>
+
+<h3 id="Propriétés_2">Propriétés</h3>
+
+<p></p><dl><dt><code>Promise.prototype.constructor</code></dt>
+ <dd>Renvoie la fonction qui a créé le prototype d'une instance. Ce sera la fonction <a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Promise" title="L'interface Promise représente un intermédiaire (proxy) vers une valeur qui n'est pas nécessairement connue au moment de sa création. Cela permet d'associer des gestionnaires au succès éventuel d'une action asynchrone et à la raison d'une erreur. Ainsi, des méthodes asynchrones renvoient des valeurs comme les méthodes synchrones, la seule différence est que la valeur retournée par la méthode asynchrone est une promesse (d'avoir une valeur plus tard)."><code>Promise</code></a> par défaut.</dd>
+</dl><p></p>
+
+<h3 id="Méthodes_2">Méthodes</h3>
+
+<p></p><dl><dt><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Promise/catch" title="La méthode catch() renvoie un objet Promise et ne traite que des cas où la promesse initiale est rejetée. Elle a le même effet qu'un appel à Promise.prototype.then(undefined, siRejetée)."><code>Promise.prototype.catch(onRejected)</code></a></dt>
+ <dd>Ajoute une fonction <em>callback</em> à utiliser en cas de rejet de
+ la promesse. Elle renvoie une nouvelle promesse qui est résolue avec la
+ valeur de retour du callback s'il est appelé ou avec la valeur de 
+résolution initiale si la promesse est tenue (et non rejetée).</dd>
+ <dt><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Promise/then" title="La méthode then() renvoie un objet Promise. Elle prend deux arguments qui sont deux fonctions callback à utiliser en cas de complétion ou d'échec de la Promise."><code>Promise.prototype.then(onFulfilled, onRejected)</code></a></dt>
+ <dd>Ajoute des fonctions à utiliser en cas de résolution ou de rejet de
+ la promesse et renvoie une nouvelle promesse qui est résolue avec la 
+valeur de retour de la fonction utilisée en fonction de la résolution ou
+ non.</dd>
+</dl><p></p>
+
+<h2 id="Exemples">Exemples</h2>
+
+<h3 id="Créer_un_objet_Promise">Créer un objet <code>Promise</code></h3>
+
+<pre class="brush: html hidden line-numbers  language-html"><code class="  language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>btn<span class="token punctuation">"</span></span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>button<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>Créer un objet Promise !<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>log<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span><span class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>Dans le court exemple qui suit, on illustre le mécanisme d'une <code>Promise</code>. La méthode <code>testPromise()</code> est appelée chaque fois qu'on clique sur l'élément <a href="https://developer.mozilla.org/fr/docs/Web/HTML/Element/button" title="L'élément HTML &lt;button&gt; (pour bouton) est utilisé afin de créer un contrôle interactif ayant la forme d'un bouton."><code>&lt;button&gt;</code></a>. Cette méthode crée une promesse qui sera tenue grâce à la fonction <a href="https://developer.mozilla.org/fr/docs/Web/API/Window/setTimeout" class="new" title="Cette documentation n'a pas encore été rédigée, vous pouvez aider en contribuant&nbsp;!"><code>window.setTimeout()</code></a>, et avec la valeur comptePromesse (nombre commançant à 1) après <code>1s</code> à <code>3s</code> (aléatoire). Le constructeur Promise() est utilisé pour créer la promesse.</p>
+
+<p>Le fait que la promesse soit tenue est simplement enregistré via un <em>callback</em> sur <code>p1.then()</code>. Quelques indicateurs illustrent la manière dont la partie synchrone est découplée de la partie asynchrone.</p>
+
+<pre class="brush: js line-numbers  language-js"><code class="  language-js"><span class="token string">'use strict'</span><span class="token punctuation">;</span>
+<span class="token keyword">var</span> comptePromesse <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+
+<span class="token keyword">function</span> <span class="token function">testPromise</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">var</span> thisComptePromesse <span class="token operator">=</span> <span class="token operator">++</span>comptePromesse<span class="token punctuation">;</span>
+
+  <span class="token keyword">var</span> log <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">'log'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  log<span class="token punctuation">.</span><span class="token function">insertAdjacentHTML</span><span class="token punctuation">(</span><span class="token string">'beforeend'</span><span class="token punctuation">,</span> thisComptePromesse <span class="token operator">+</span> 
+      <span class="token string">') Started (&lt;small&gt;Début du code synchrone&lt;/small&gt;)&lt;br/&gt;'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment" spellcheck="true">// on crée une nouvelle promesse :</span>
+  <span class="token keyword">var</span> p1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Promise</span><span class="token punctuation">(</span>
+    <span class="token comment" spellcheck="true">// La fonction de résolution est appelée avec la capacité de </span>
+    <span class="token comment" spellcheck="true">// tenir ou de rompre la promesse</span>
+    <span class="token keyword">function</span><span class="token punctuation">(</span>resolve<span class="token punctuation">,</span> reject<span class="token punctuation">)</span> <span class="token punctuation">{</span>       
+      log<span class="token punctuation">.</span><span class="token function">insertAdjacentHTML</span><span class="token punctuation">(</span><span class="token string">'beforeend'</span><span class="token punctuation">,</span> thisComptePromesse <span class="token operator">+</span> 
+          <span class="token string">') Promise started (&lt;small&gt;Début du code asynchrone&lt;/small&gt;)&lt;br/&gt;'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+      <span class="token comment" spellcheck="true">// Voici un exemple simple pour créer un code asynchrone</span>
+      window<span class="token punctuation">.</span><span class="token function">setTimeout</span><span class="token punctuation">(</span>
+        <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token comment" spellcheck="true">// On tient la promesse !</span>
+          <span class="token function">resolve</span><span class="token punctuation">(</span>thisComptePromesse<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span> Math<span class="token punctuation">.</span><span class="token function">random</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">2000</span> <span class="token operator">+</span> <span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment" spellcheck="true">// On définit ce qui se passe quand la promesse est tenue</span>
+  <span class="token comment" spellcheck="true">// et ce qu'on appelle (uniquement) dans ce cas</span>
+  <span class="token comment" spellcheck="true">// La méthode catch() définit le traitement à effectuer</span>
+  <span class="token comment" spellcheck="true">// quand la promesse est rompue.</span>
+  p1<span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>
+    <span class="token comment" spellcheck="true">// On affiche un message avec la valeur</span>
+    <span class="token keyword">function</span><span class="token punctuation">(</span>val<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      log<span class="token punctuation">.</span><span class="token function">insertAdjacentHTML</span><span class="token punctuation">(</span><span class="token string">'beforeend'</span><span class="token punctuation">,</span> val <span class="token operator">+</span>
+          <span class="token string">') Promise fulfilled (&lt;small&gt;Fin du code asynchrone&lt;/small&gt;)&lt;br/&gt;'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token keyword">catch</span><span class="token punctuation">(</span>
+      <span class="token comment" spellcheck="true">// Promesse rejetée</span>
+      <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> 
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"promesse rompue"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  log<span class="token punctuation">.</span><span class="token function">insertAdjacentHTML</span><span class="token punctuation">(</span><span class="token string">'beforeend'</span><span class="token punctuation">,</span> thisComptePromesse <span class="token operator">+</span> 
+      <span class="token string">') Promise made (&lt;small&gt;Fin du code synchrone&lt;/small&gt;)&lt;br/&gt;'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="brush: js hidden line-numbers  language-js"><code class="  language-js"><span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token string">"Promise"</span> <span class="token keyword">in</span> window<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">var</span> btn <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">"btn"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  btn<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">"click"</span><span class="token punctuation">,</span> testPromise<span class="token punctuation">)</span><span class="token punctuation">;</span>
+ <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+  log <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">'log'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  log<span class="token punctuation">.</span>innerHTML <span class="token operator">=</span> <span class="token string">"L'exemple live n'est pas disponible pour votre navigateur car celui-ci ne supporte pas l'interface &lt;code&gt;Promise&lt;code&gt;."</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>L'exemple s'exécute lorsqu'on clique sur le bouton. Pour tester cet 
+exemple, il est nécessaire d'utiliser un navigateur qui supporte les 
+objets <code>Promise</code>. En cliquant plusieurs fois sur le bouton en
+ peu de temps, on verra qu'il y a plusieurs promesses tenues les une 
+après les autres.</p>
+
+<p><iframe id="frame_Créer_un_objet_Promise" src="Promise%20-%20JavaScript%20_%20MDN_fichiers/Crer_un_objet_Promise.htm" class="live-sample-frame sample-code-frame" height="200" frameborder="0" width="500"></iframe><div class="open-in-host-container"><button class="open-in-host">Ouvrir dans codepen <i class="icon-codepen" aria-hidden="true"></i></button><button class="open-in-host">Ouvrir dans jsfiddle <i class="icon-jsfiddle" aria-hidden="true"></i></button></div></p>
+
+<h3 id="Charger_une_image_en_XHR">Charger une image en XHR</h3>
+
+<p>Un autre exemple simple utilisant <code>Promise</code> et <code><a href="https://developer.mozilla.org/fr/docs/Web/API/XMLHttpRequest">XMLHttpRequest</a></code> afin de charger une image est disponible sur le dépôt GitHub MDN<a href="https://github.com/mdn/promises-test/blob/gh-pages/index.html" class="external external-icon"> promise-test</a>. Vous pouvez également consulter le résultat obtenu <a href="https://mdn.github.io/promises-test/" class="external external-icon">sur cette page</a>. Chaque étape est commentée afin de vous permettre de suivre l'état de la promesse et l'architecture utilisée avec XHR.</p>
+
+<h2 id="Spécifications">Spécifications</h2>
+
+<table class="standard-table">
+ <tbody>
+  <tr>
+   <th scope="col">Spécification</th>
+   <th scope="col">État</th>
+   <th scope="col">Commentaires</th>
+  </tr>
+  <tr>
+   <td><a href="http://www.ecma-international.org/ecma-262/6.0/#sec-promise-objects" class="external external-icon" hreflang="en" lang="en">ECMAScript 2015 (6th Edition, ECMA-262)<br><small lang="fr">La définition de 'Promise' dans cette spécification.</small></a></td>
+   <td><span class="spec-Standard">Standard</span></td>
+   <td>Définition initiale au sein d'un standard ECMA.</td>
+  </tr>
+  <tr>
+   <td><a href="https://tc39.github.io/ecma262/#sec-promise-objects" class="external external-icon" hreflang="en" lang="en">ECMAScript 2017 Draft (ECMA-262)<br><small lang="fr">La définition de 'Promise' dans cette spécification.</small></a></td>
+   <td><span class="spec-Draft">Projet</span></td>
+   <td>&nbsp;</td>
+  </tr>
+ </tbody>
+</table>
+
+<h2 id="Compatibilité_des_navigateurs">Compatibilité des navigateurs</h2>
+
+<p class="hidden">Pour contribuer à ces données de compatibilité, vous pouvez envoyer une poule requête sur : <a href="https://github.com/mdn/browser-compat-data/blob/master/javascript/promise.json" class="external external-icon">https://github.com/mdn/browser-compat-data/blob/master/javascript/promise.json</a>.</p>
+
+<p></p><div class="htab"><a name="AutoCompatibilityTable" id="AutoCompatibilityTable"></a><ul><li class="selected"><a>Ordinateur</a></li><li><a>Mobile</a></li></ul><div id="compat-desktop" style="display: block;"><table class="compat-table">  <thead>    <tr>      <th>Fonctionnalité</th>      <th>Chrome</th>
+      <th>Edge</th>
+      <th>Firefox</th>
+      <th>Internet Explorer</th>
+      <th>Opera</th>
+      <th>Safari</th>
+      <th>Servo</th>
+    </tr>  </thead><tbody><tr><td>Promise</td><td>32.0</td><td><span style="color: #888;">(Oui)</span></td><td>29.0<a href="#note-1"><strong><sup>1</sup></strong></a></td><td><span style="color: #f00;">Aucun support</span></td><td>19</td><td>7.1<a href="#note-2"><strong><sup>2</sup></strong></a></td><td><span style="color: #f00;">Aucun support</span></td></tr><tr><td>Promise.all</td><td>32.0</td><td><span style="color: #888;">(Oui)</span></td><td>29.0</td><td><span style="color: #f00;">Aucun support</span></td><td>19</td><td>7.1</td><td><span style="color: #f00;">Aucun support</span></td></tr><tr><td>Promise.prototype</td><td>32.0</td><td><span style="color: #888;">(Oui)</span></td><td>29.0</td><td><span style="color: #f00;">Aucun support</span></td><td>19</td><td>7.1</td><td><span style="color: #f00;">Aucun support</span></td></tr><tr><td>Promise.prototype.catch</td><td>32.0</td><td><span style="color: #888;">(Oui)</span></td><td>29.0</td><td><span style="color: #f00;">Aucun support</span></td><td>19</td><td>7.1</td><td><span style="color: #f00;">Aucun support</span></td></tr><tr><td>Promise.prototype.then</td><td>32.0</td><td><span style="color: #888;">(Oui)</span></td><td>29.0</td><td><span style="color: #f00;">Aucun support</span></td><td>19</td><td>7.1</td><td><span style="color: #f00;">Aucun support</span></td></tr><tr><td>Promise.race</td><td>32.0</td><td><span style="color: #888;">(Oui)</span></td><td>29.0</td><td><span style="color: #f00;">Aucun support</span></td><td>19</td><td>7.1</td><td><span style="color: #f00;">Aucun support</span></td></tr><tr><td>Promise.reject</td><td>32.0</td><td><span style="color: #888;">(Oui)</span></td><td>29.0</td><td><span style="color: #f00;">Aucun support</span></td><td>19</td><td>7.1</td><td><span style="color: #f00;">Aucun support</span></td></tr><tr><td>Promise.resolve</td><td>32.0</td><td><span style="color: #888;">(Oui)</span></td><td>29.0</td><td><span style="color: #f00;">Aucun support</span></td><td>19</td><td>7.1</td><td><span style="color: #f00;">Aucun support</span></td></tr></tbody></table></div><div id="compat-mobile" style="display: none;"><table class="compat-table">  <thead>    <tr>      <th>Fonctionnalité</th>      <th>Android</th>
+      <th>Chrome for Android</th>
+      <th>Edge Mobile</th>
+      <th>Firefox for Android</th>
+      <th>IE Mobile</th>
+      <th>Opera Mobile</th>
+      <th>Safari Mobile</th>
+    </tr>  </thead><tbody><tr><td>Promise</td><td>4.4.4</td><td>32.0</td><td><span style="color: #888;">(Oui)</span></td><td>29<a href="#note-1"><strong><sup>1</sup></strong></a></td><td><span style="color: #f00;">Aucun support</span></td><td><span style="color: #888;">(Oui)</span></td><td>8.0<a href="#note-2"><strong><sup>2</sup></strong></a></td></tr><tr><td>Promise.all</td><td>4.4.4</td><td>32.0</td><td><span style="color: #888;">(Oui)</span></td><td>29</td><td><span style="color: #f00;">Aucun support</span></td><td><span style="color: #888;">(Oui)</span></td><td>8.0</td></tr><tr><td>Promise.prototype</td><td>4.4.4</td><td>32.0</td><td><span style="color: #888;">(Oui)</span></td><td>29</td><td><span style="color: #f00;">Aucun support</span></td><td><span style="color: #888;">(Oui)</span></td><td>8.0</td></tr><tr><td>Promise.prototype.catch</td><td>4.4.4</td><td>32.0</td><td><span style="color: #888;">(Oui)</span></td><td>29</td><td><span style="color: #f00;">Aucun support</span></td><td><span style="color: #888;">(Oui)</span></td><td>8.0</td></tr><tr><td>Promise.prototype.then</td><td>4.4.4</td><td>32.0</td><td><span style="color: #888;">(Oui)</span></td><td>29</td><td><span style="color: #f00;">Aucun support</span></td><td><span style="color: #888;">(Oui)</span></td><td>8.0</td></tr><tr><td>Promise.race</td><td>4.4.4</td><td>32.0</td><td><span style="color: #888;">(Oui)</span></td><td>29</td><td><span style="color: #f00;">Aucun support</span></td><td><span style="color: #888;">(Oui)</span></td><td>8.0</td></tr><tr><td>Promise.reject</td><td>4.4.4</td><td>32.0</td><td><span style="color: #888;">(Oui)</span></td><td>29</td><td><span style="color: #f00;">Aucun support</span></td><td><span style="color: #888;">(Oui)</span></td><td>8.0</td></tr><tr><td>Promise.resolve</td><td>4.4.4</td><td>32.0</td><td><span style="color: #888;">(Oui)</span></td><td>29</td><td><span style="color: #f00;">Aucun support</span></td><td><span style="color: #888;">(Oui)</span></td><td>8.0</td></tr></tbody></table></div></div><p id="note-1">1. Constructor requires a new operator since version 37.</p><p id="note-2">2. Constructor requires a new operator since version 10.</p><p></p>
+
+<h2 id="Voir_aussi">Voir aussi</h2>
+
+<ul>
+ <li><a href="https://promisesaplus.com/" class="external external-icon">Promises/A+ specification</a></li>
+ <li><a href="https://www.html5rocks.com/en/tutorials/es6/promises/" class="external external-icon">Jake Archibald : <em>JavaScript Promises : There and Back Again</em></a> (tutoriel en anglais)</li>
+ <li><a href="https://de.slideshare.net/domenicdenicola/callbacks-promises-and-coroutines-oh-my-the-evolution-of-asynchronicity-in-javascript" class="external external-icon">Domenic Denicola : <em>Callbacks, Promises, and Coroutines – Asynchronous Programming Patterns in JavaScript</em></a> (présentation en anglais sur l'asynchronisme en JavaScript)</li>
+ <li><a href="https://www.mattgreer.org/articles/promises-in-wicked-detail/" class="external external-icon">Matt Greer : <em>JavaScript Promises ... In Wicked Detail</em></a> (en anglais)</li>
+ <li><a href="https://www.promisejs.org/" class="external external-icon">Forbes Lindesay : promisejs.org</a> (en anglais)</li>
+ <li><a href="https://pouchdb.com/2015/05/18/we-have-a-problem-with-promises.html" class="external external-icon">Nolan Lawson : <em>We have a problem with promises - Common mistakes with promises</em></a> (en anglais)</li>
+ <li><a href="https://github.com/jakearchibald/es6-promise/" class="external external-icon">Prothèse pour les promesses par Jake Archibald</a></li>
+ <li><a href="https://www.udacity.com/course/javascript-promises--ud898" class="external external-icon">Les promesses JavaScript sur Udacity</a> (en anglais)</li>
+</ul>
+                  
+                
+              </article>
+
+              
+
+                <!-- contributors -->
+                <div class="wiki-block contributors">
+                  <h2 class="offscreen">Étiquettes et contributeurs liés au document</h2>
+                  
+                  
+  <div class="tag-attach-list contributors-sub">
+    <i aria-hidden="true" class="icon-tags icon-fw"></i>
+    <strong>Étiquettes :</strong>&nbsp;
+    <ul class="tags tags-small">
+      
+        <li><a href="https://developer.mozilla.org/fr/docs/tag/ECMAScript6">ECMAScript6</a></li>
+      
+        <li><a href="https://developer.mozilla.org/fr/docs/tag/JavaScript">JavaScript</a></li>
+      
+        <li><a href="https://developer.mozilla.org/fr/docs/tag/Promise">Promise</a></li>
+      
+        <li><a href="https://developer.mozilla.org/fr/docs/tag/R%C3%A9f%C3%A9rence">Référence</a></li>
+      
+    </ul>
+  </div>
+
+
+                  
+                    <div class="contributors-sub">
+                      <i aria-hidden="true" class="icon-group icon-fw"></i>&nbsp;<strong>Contributeurs à cette page&nbsp;:</strong> 
+        <a href="https://developer.mozilla.org/fr/profiles/SphinxKnight">SphinxKnight</a>, 
+    
+        <a href="https://developer.mozilla.org/fr/profiles/VivienZo">VivienZo</a>, 
+    
+        <a href="https://developer.mozilla.org/fr/profiles/sammy44nts">sammy44nts</a>, 
+    
+        <a href="https://developer.mozilla.org/fr/profiles/Mr21">Mr21</a>, 
+    
+        <a href="https://developer.mozilla.org/fr/profiles/toons3000">toons3000</a>, 
+    
+        <a href="https://developer.mozilla.org/fr/profiles/teoli">teoli</a>, 
+    
+        <a href="https://developer.mozilla.org/fr/profiles/neveldo">neveldo</a>, 
+    
+        <a href="https://developer.mozilla.org/fr/profiles/nicodel">nicodel</a>, 
+    
+        <a href="https://developer.mozilla.org/fr/profiles/Goofy">Goofy</a>, 
+    
+        <a href="https://developer.mozilla.org/fr/profiles/P45QU10U">P45QU10U</a>
+    
+                    </div>
+                  
+
+                  
+                    <div class="contributors-sub">
+                      <i aria-hidden="true" class="icon-clock-o icon-fw"></i>&nbsp;<strong>Dernière mise à jour par :</strong>
+                      <a href="https://developer.mozilla.org/fr/profiles/SphinxKnight">SphinxKnight</a>,
+                      <time datetime="2016-11-15T10:25:48-08:00">15 nov. 2016 à 10:25:48</time>
+                    </div>
+                  
+                </div>
+              
+
+              
+                  <div class="newsletter-box">
+                    <div class="newsletter">
+    <form id="newsletterForm" name="newsletter-form" class="nodisable" action="https://www.mozilla.org/en-US/newsletter/" method="post">
+        <h2 class="newsletter-teaser">Recevez le meilleur du développement web</h2>
+        <p class="newsletter-description">S'abonner à la lettre d'information&nbsp;:</p>
+        <input id="fmt" name="fmt" value="H" type="hidden">
+        <input id="newsletterNewslettersInput" name="newsletters" value="app-dev" type="hidden">
+
+        <div id="newsletterErrors" class="newsletter-errors"></div>
+
+        <div id="newsletterEmail" class="form-group">
+            <label for="newsletterEmailInput" class="form-label offscreen">Adresse électronique</label>
+            <input id="newsletterEmailInput" name="email" class="form-input newsletter-input-email" required="" placeholder="adresse@example.com" size="30" type="email">
+        </div>
+
+        <div id="newsletterPrivacy" class="form-group form-group-agree hidden">
+            <input id="newsletterPrivacyInput" name="privacy" required="" type="checkbox">
+            <label for="newsletterPrivacyInput">
+            J'accepte la gestion de mes informations personnelles par Mozilla comme indiqué dans cette <a href="https://www.mozilla.org/privacy/">politique de confidentialité</a>.
+            </label>
+        </div>
+        <div id="newsletterSubmit">
+            <button id="newsletter-submit" type="submit" class="button positive">S'inscrire maintenant</button>
+        </div>
+        
+        <p class="newsletter-lang">Cette lettre d'information est uniquement disponible en anglais pour l'instant.</p>
+        
+    </form>
+    <div id="newsletterThanks" class="newsletter-thanks hidden">
+        <h2>Merci&nbsp;! Veuillez vérifier votre boîte de réception afin de confirmer votre inscription.</h2>
+        <p>Si vous n'avez pas déjà confirmé d'inscription à une lettre 
+d'information Mozilla, vous devrez valider cette inscription. Veuillez 
+vérifier votre boîte de réception, éventuellement vos messages 
+indésirables, pour consulter le message que nous vous avons envoyé.
+        </p>
+    </div>
+    <button id="newsletterHide" type="button" class="only-icon newsletter-hide"><span>Masquer l'inscription à la lettre d'information</span><i aria-hidden="true" class="icon-times"></i></button>
+</div>
+                  </div>
+              
+            </div>
+
+            
+              <!-- quick links and zone subnav strip -->
+              <div id="wiki-left" class="column-strip wiki-column">
+
+              
+
+                
+
+                
+                  <!-- quick links -->
+                  
+  <div class="quick-links" id="quick-links">
+    <div class="title see-also">Voir aussi</div>
+    <ol><li><strong><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/">Objets standards</a></strong></li><li><strong><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Promise"><code>Promise</code></a></strong></li><li data-default-state="open" class="toggleable current" data-closed=""><a href="#" class="toggler" aria-haspopup="true"><i aria-hidden="true" class="icon-caret-down"></i><strong>Propriétés</strong></a><ol class="toggle-container" style="display: block;" aria-expanded="true"><li><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Promise/prototype" title="La propriété Promise.prototype représente le prototype pour le constructeur Promise."><code>Promise.prototype</code></a></li></ol></li><li data-default-state="open" class="toggleable current" data-closed=""><a href="#" class="toggler" aria-haspopup="true"><i aria-hidden="true" class="icon-caret-down"></i><strong>Méthodes</strong></a><ol class="toggle-container" style="display: block;" aria-expanded="true"><li><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Promise/all" title="La méthode Promise.all(itérable) renvoie une promesse (promise) qui est résolue/tenue lorsque toutes les promesses de l'itérable ont été résolues/tenues."><code>Promise.all()</code></a></li><li><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Promise/catch" title="La méthode catch() renvoie un objet Promise et ne traite que des cas où la promesse initiale est rejetée. Elle a le même effet qu'un appel à Promise.prototype.then(undefined, siRejetée)."><code>Promise.prototype.catch()</code></a></li><li><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Promise/then" title="La méthode then() renvoie un objet Promise. Elle peut prendre jusqu'à deux arguments qui sont deux fonctions callback à utiliser en cas de complétion ou d'échec de la Promise."><code>Promise.prototype.then()</code></a></li><li><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Promise/race" title="La méthode Promise.race(itérable) renvoie une promesse qui est résolue ou rejetée dès qu'une des promesses de l'itérables est résolue ou rejetée. La valeur (dans le cas de la résolution) ou la raison (dans le cas d'un échec) utilisée est celle de la promesse de l'itérable qui est resolue/qui échoue."><code>Promise.race()</code></a></li><li><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Promise/reject" title="La méthode Promise.reject(raison) renvoie un objet Promise qui est rejeté (la promesse n'est pas tenue) à cause d'une raison donnée."><code>Promise.reject()</code></a></li><li><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Promise/resolve" title="Une promesse (Promise qui est résolue avec la valeur indiquée en argument."><code>Promise.resolve()</code></a></li></ol></li><li><strong>Héritage&nbsp;:</strong></li><li><strong><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Function"><code>Function</code></a></strong></li><li class="toggleable" data-closed="true"><a href="#" class="toggler" aria-haspopup="true"><i aria-hidden="true" class="icon-caret-right"></i><strong>Propriétés</strong></a><ol class="toggle-container" style="display: none;"><li><span class="sidebar-icon"><span title="Cette API obsolète ne doit plus être utilisée, mais elle peut continuer à fonctionner."><i class="icon-thumbs-down-alt"> </i></span></span><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Function/arguments" title="La propriété function.arguments fait référence à un objet dont la structure est semblable à celle d'un tableau dont les éléments correspondent aux arguments passés à une fonction. En lieu et place, il faut désormais utiliser arguments."><code>Function.arguments</code></a></li><li><span class="sidebar-icon"><span title="This is an obsolete API and is no longer guaranteed to work."><i class="icon-trash"> </i></span></span><s class="obsoleteElement"><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Function/arity" title="La propriété arity était utilisée pour renvoyer le nombre d'arguments attendu par la fonction. Elle n'existe plus et a été remplacée par la propriété Function.prototype.length."><code>Function.arity</code></a></s></li><li><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Function/caller" title="La propriété function.caller renvoie la fonction qui a appelé la fonction donnée."><code>Function.caller</code></a></li><li><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Function/displayName" title="La propriété function.displayName renvoie le nom affiché de la fonction."><code>Function.displayName</code></a></li><li><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Function/length" title="La propriété length définit le nombre d'arguments attendus par la fonction."><code>Function.length</code></a></li><li><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Function/name" title="La propriété function.name renvoie le nom de la fonction."><code>Function.name</code></a></li><li><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Function/prototype" title="La propriété Function.prototype représente le prototype de l'objet Function."><code>Function.prototype</code></a></li></ol></li><li class="toggleable" data-closed="true"><a href="#" class="toggler" aria-haspopup="true"><i aria-hidden="true" class="icon-caret-right"></i><strong>Méthodes</strong></a><ol class="toggle-container" style="display: none;"><li><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Function/apply" title="La méthode apply() appelle une fonction en lui passant une valeur this et des arguments sous forme d'un tableau (ou d'un objet semblable à un tableau)."><code>Function.prototype.apply()</code></a></li><li><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Function/bind" title="La fonction bind() crée une nouvelle fonction qui, lorsqu'elle est appelée, a pour contexte this la valeur passée en paramètre et éventuellement une suite d'arguments qui précéderont ceux fournis à l'appel de la fonction créée."><code>Function.prototype.bind()</code></a></li><li><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Function/call" title="La méthode call() réalise un appel à une fonction avec une valeur this et les arguments fournis individuellement."><code>Function.prototype.call()</code></a></li><li><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Function/isGenerator" title="La méthode isGenerator() permet de déterminer si une fonction est un générateur."><code>Function.prototype.isGenerator()</code></a></li><li><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Function/toSource" title="La méthode toSource() renvoie une chaîne de caractères représentant le code source de l'objet."><code>Function.prototype.toSource()</code></a></li><li><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Function/toString" title="La méthode toString() renvoie une chaîne de caractères représentant le code source de la fonction."><code>Function.prototype.toString()</code></a></li></ol></li><li><strong><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Object"><code>Object</code></a></strong></li><li class="toggleable" data-closed="true"><a href="#" class="toggler" aria-haspopup="true"><i aria-hidden="true" class="icon-caret-right"></i><strong>Propriétés</strong></a><ol class="toggle-container" style="display: none;"><li><span class="sidebar-icon"><span title="This is an obsolete API and is no longer guaranteed to work."><i class="icon-trash"> </i></span></span><s class="obsoleteElement"><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Object/count" title="La propriété __count__ était utilisée pour compter les propriétés énumérables d'un objet mais a été retiréee."><code>Object.prototype.__count__</code></a></s></li><li><span class="sidebar-icon"><span title="This is an obsolete API and is no longer guaranteed to work."><i class="icon-trash"> </i></span></span><s class="obsoleteElement"><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Object/noSuchMethod" title="La propriété __noSuchMethod__ était utilisée pour faire référence à une fonction qui devait être utilisée lorsqu'on appelait une méthode inexistante d'un objet. Cette fonction n'est plus disponible."><code>Object.prototype.__noSuchMethod__</code></a></s></li><li><span class="sidebar-icon"><span title="This is an obsolete API and is no longer guaranteed to work."><i class="icon-trash"> </i></span></span><s class="obsoleteElement"><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Object/Parent" title="La propriété __parent__ était utilisée pour pointer vers le contexte d'un objet mais elle a été supprimée."><code>Object.prototype.__parent__</code></a></s></li><li><span class="sidebar-icon"><span title="Cette API obsolète ne doit plus être utilisée, mais elle peut continuer à fonctionner."><i class="icon-thumbs-down-alt"> </i></span></span><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Object/proto" title="La propriété __proto__ de Object.prototype est une propriété accesseur (un couple de fonction avec un accesseur (getter) et un mutateur (setter)) qui expose le&nbsp; [[Prototype]] interne (qui est soit un objet, soit null) de l'objet courant."><code>Object.prototype.__proto__</code></a></li><li><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Object/constructor" title="Cette propriété renvoie une référence à la fonction Object qui a créé le prototype de l'instance. La valeur de cette propriété est une référence à la fonction elle-même, ce n'est pas une chaîne de caractères représentant le nom de la fonction. Cette valeur est en lecture seule pour les valeurs de types primitifs comme 1,&nbsp;true et &quot;test&quot;."><code>Object.prototype.constructor</code></a></li></ol></li><li class="toggleable" data-closed="true"><a href="#" class="toggler" aria-haspopup="true"><i aria-hidden="true" class="icon-caret-right"></i><strong>Méthodes</strong></a><ol class="toggle-container" style="display: none;"><li><span class="sidebar-icon"><span title="Cette API obsolète ne doit plus être utilisée, mais elle peut continuer à fonctionner."><i class="icon-thumbs-down-alt"> </i></span></span><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Object/defineGetter" title="La méthode __defineGetter__ permet de lier une propriété d'un objet à une fonction à exécuter lorsqu'on accède à la propriété."><code>Object.prototype.__defineGetter__()</code></a></li><li><span class="sidebar-icon"><span title="Cette API obsolète ne doit plus être utilisée, mais elle peut continuer à fonctionner."><i class="icon-thumbs-down-alt"> </i></span></span><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Object/defineSetter" title="La méthode __defineSetter__ permet de lier une propriété d'un objet à une fonction qui sera exécutée pour toute tentative de définition/changement de cette propriété."><code>Object.prototype.__defineSetter__()</code></a></li><li><span class="sidebar-icon"><span title="Cette API obsolète ne doit plus être utilisée, mais elle peut continuer à fonctionner."><i class="icon-thumbs-down-alt"> </i></span></span><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Object/lookupGetter" title="La méthode __lookupGetter__ renvoie la fonction liée comme accesseur d'une propriété donnée."><code>Object.prototype.__lookupGetter__()</code></a></li><li><span class="sidebar-icon"><span title="Cette API obsolète ne doit plus être utilisée, mais elle peut continuer à fonctionner."><i class="icon-thumbs-down-alt"> </i></span></span><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Object/lookupSetter" title="La méthode __lookupSetter__ renvoie la fonction définie comme mutateur pour une propriété donnée."><code>Object.prototype.__lookupSetter__()</code></a></li><li><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Object/hasOwnProperty" title="La méthode&nbsp;hasOwnProperty()&nbsp;retourne un booléen indiquant si l'objet possède la propriété spécifiée."><code>Object.prototype.hasOwnProperty()</code></a></li><li><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Object/isPrototypeOf" title="La méthode isPrototypeOf() permet de tester si un objet fait partie de la chaîne de prototypes d'un autre objet."><code>Object.prototype.isPrototypeOf()</code></a></li><li><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Object/propertyIsEnumerable" title="La méthode propertyIsEnumerable() renvoie un booléen qui indique si la propriété donnée est énumérable."><code>Object.prototype.propertyIsEnumerable()</code></a></li><li><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Object/toLocaleString" title="La méthode&nbsp;toLocaleString() renvoie une chaine de caractères représentant l'objet. Cette méthode est destinée à être surchargée par les objets dérivés à des fins spécifiques pour prendre en compte les locales."><code>Object.prototype.toLocaleString()</code></a></li><li><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Object/toSource" title="La méthode toSource() renvoie une chaîne de caractères représentant le code source d'un objet."><code>Object.prototype.toSource()</code></a></li><li><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Object/toString" title="La méthode toString() renvoie une chaîne de caractères représentant l'objet."><code>Object.prototype.toString()</code></a></li><li><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Object/unwatch" title="La méthode unwatch() permet de retirer un point d'arrêt conditionnel créé par la méthode watch()."><code>Object.prototype.unwatch()</code></a></li><li><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Object/valueOf" title="La méthode valueOf() renvoie la valeur primitive d'un objet donné."><code>Object.prototype.valueOf()</code></a></li><li><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Object/watch" title="La méthode watch() permet d'appeler une fonction lorsqu'une propriété est affectée."><code>Object.prototype.watch()</code></a></li><li><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Object/setPrototypeOf" title="La méthode Object.setPrototypeOf() définit le prototype (autrement dit la propriété interne [[Prototype]]) d'un objet donné avec un autre objet ou null."><code>Object.setPrototypeOf()</code></a></li></ol></li></ol>
+  </div>
+                
+
+                <!-- approvals -->
+                
+
+              
+
+              </div>
+            
+          </div>
+        </div>
+      </div>
+    </div> <!-- ends "main-content" -->
+
+  <menu type="context" id="edit-history-menu">
+    <menuitem data-action="/fr/docs/Web/JavaScript/Reference/Objets_globaux/Promise$edit" label="Modifier la page"></menuitem>
+    <menuitem data-action="/fr/docs/Web/JavaScript/Reference/Objets_globaux/Promise$history" label="Voir l'historique de la page"></menuitem>
+  </menu>
+
+  </div></main>
+
+  <!-- Footer -->
+  <footer id="main-footer"><div class="center">
+    <div class="column-container">
+      <div class="column-main">
+        
+        <div class="contentinfo">
+          <p>© 2005-2016 Mozilla Developer Network et contributeurs individuels.</p> <p>Tous les contenus sont disponibles sous <a href="https://developer.mozilla.org/en-US/docs/MDN/About#Copyrights_and_licenses">ces licences</a>.</p>
+          <ul>
+            <li><a href="https://developer.mozilla.org/docs/MDN/About">À propos de MDN</a></li>
+            <li><a href="https://www.mozilla.org/about/legal/terms/mozilla">Conditions d'utilisation</a></li>
+            <li><a href="https://www.mozilla.org/privacy/websites/">Confidentialité</a></li>
+            <li><a href="https://www.mozilla.org/privacy/websites/#cookies">Cookies</a></li>
+            <li><a href="https://github.com/mozilla/kuma">Contribuer au code</a></li>
+          </ul>
+        </div>
+        
+      </div>
+      <div class="column-strip">
+        
+          
+  
+    <form class="languages go" method="get" action="/fr/docs/Web">
+      <label for="language">Autres langues&nbsp;:</label>
+      <select id="language" class="wiki-l10n" name="next" dir="ltr">
+        <option title="Français" value="/fr/docs/Web/JavaScript/Reference/Objets_globaux/Promise" selected="selected">
+          Français (fr)
+        </option>
+        
+          <option title="Anglais américain" value="/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">
+            English (US) (en-US)
+          </option>
+          <option title="Allemand" value="/de/docs/Web/JavaScript/Reference/Global_Objects/Promise">
+            Deutsch (de)
+          </option>
+          <option title="Espagnol" value="/es/docs/Web/JavaScript/Referencia/Objetos_globales/Promesa">
+            Español (es)
+          </option>
+          <option title="Indonésien" value="/id/docs/Web/JavaScript/Reference/Global_Objects/Promise">
+            Bahasa Indonesia (id)
+          </option>
+          <option title="Italien" value="/it/docs/Web/JavaScript/Reference/Global_Objects/Promise">
+            Italiano (it)
+          </option>
+          <option title="Japonais" value="/ja/docs/Web/JavaScript/Reference/Global_Objects/Promise">
+            日本語 (ja)
+          </option>
+          <option title="Coréen" value="/ko/docs/Web/JavaScript/Reference/Global_Objects/Promise">
+            한국어 (ko)
+          </option>
+          <option title="Néerlandais" value="/nl/docs/Web/JavaScript/Reference/Global_Objects/Promise">
+            Nederlands (nl)
+          </option>
+          <option title="Portugais brésilien" value="/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Promise">
+            Português (do&nbsp;Brasil) (pt-BR)
+          </option>
+          <option title="Russe" value="/ru/docs/Web/JavaScript/Reference/Global_Objects/Promise">
+            Русский (ru)
+          </option>
+          <option title="Turc" value="/tr/docs/Web/JavaScript/Reference/Global_Objects/Promise">
+            Türkçe (tr)
+          </option>
+          <option title="Vietnamien" value="/vi/docs/Web/JavaScript/Reference/Global_Objects/Promise">
+            Tiếng Việt (vi)
+          </option>
+          <option title="Chinois (simplifié)" value="/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise">
+            中文 (简体) (zh-CN)
+          </option>
+      </select>
+      <noscript><button type="submit">OK</button></noscript>
+    </form>
+  
+
+        
+      </div>
+    </div>
+  </div></footer>
+
+  <!-- site js -->
+  
+    
+    <!--[if lte IE 8]><script type="text/javascript" src="https://developer.cdn.mozilla.net/static/build/js/selectivizr.091e18cf669b.js" charset="utf-8"></script><![endif]-->
+
+    <form id="_persona_login" method="post" action="/users/persona/signin" data-csrf-token-url="/users/persona/csrf" data-request="{&quot;siteName&quot;: &quot;Mozilla Developer Network&quot;, &quot;siteLogo&quot;: &quot;/static/img/opengraph-logo.png&quot;}" data-persona-script="https://login.persona.org/include.js">
+  <input name="csrfmiddlewaretoken" value="" id="_persona_csrf_token" type="hidden">
+  <input name="next" value="" id="_persona_next_url" type="hidden">
+  <input name="process" value="" id="_persona_process" type="hidden">
+  <input name="assertion" id="_persona_assertion" type="hidden">
+</form>
+
+
+    <script type="text/javascript" src="Promise%20-%20JavaScript%20_%20MDN_fichiers/main.js" charset="utf-8"></script>
+    
+      <script>
+        if(window.mdn && mdn.analytics) mdn.analytics.trackOutboundLinks();
+      </script>
+    
+    
+    <script type="text/javascript" src="Promise%20-%20JavaScript%20_%20MDN_fichiers/javascript.js"></script>
+  
+    <script async="" type="text/javascript" src="Promise%20-%20JavaScript%20_%20MDN_fichiers/wiki.js" charset="utf-8"></script>
+
+
+  
+
+  
+
+  
+
+  
+    <script async="" type="text/javascript" src="Promise%20-%20JavaScript%20_%20MDN_fichiers/newsletter.js" charset="utf-8"></script>
+  
+
+
+
+</body></html>
